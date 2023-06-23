@@ -24,7 +24,7 @@ Creo que necesitarás que el elemento que se instancie en el template sea una cl
 
 El kv-0.4.51 debe tener un enlace simbólico en tu HOME:
   - cd [enter]
-   ~ ~ $> ln -s [donde este]/kv-0.4.51 kv
+  - ~ $> ln -s [donde este]/kv-0.4.51 kv
 
 
 
