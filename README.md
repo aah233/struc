@@ -10,7 +10,7 @@ Tener una versión C++ con templates para el almacenamiento en árbol binario ba
 
 Creo que necesitarás que el elemento que se instancie en el template sea una clase que tenga sobrecargados algunos operadores.
 
-##Directorios:
+## Directorios:
 - BoxBB-1.1: Versión actual en C y C++.
 - kv-0.4.51: Librería kv que se ha modificado para evitar warnnings de compilación.
 - Example-1.0: Intento de tener todo en C++. Usa c-xsc otra librería de Aritmética de Intervalos diferente a kv. Puede servir para las clase Box, pero es un código C++ muy antiguo.
