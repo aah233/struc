@@ -1,0 +1,12 @@
+Box
+NDim 	2
+-2.0
++2.0
+-2.0
++2.0
+MagicNumber 123456
+f*= 3.0
+At: 
+0.0
+-1.0
+MagicNumber 123456
