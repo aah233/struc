@@ -1,28 +1,29 @@
-// member_function_templates1.cpp
+#include "box.hpp"
+#include "utils.h"
 
-//Con esto podemos obligar a tener una F y una G y despues infinitos Ts, que son los que queramos
+
 template<int F,int G, class... Ts> 
-
 class GenericForm {
-   // Definimos los atributos de la clase
-    int value = F; // F es un valor entero en tiempo de compilación
-    int value2 = G; // G es un valor entero en tiempo de compilación
+    int value = F;
+    int value2 = G;
+    iTDAT		iTDat;
+    ConstData	CtD;
+    int NDim = CtD.NDim;
 
-    /**Creacion de las clases */
-    public:
-        DivideForm() {  //Aqui estaria bien meter el divide box, para que se pueda dividir un generico 
-            std::cout << "MyForm" << std::endl;
-        }
+    void initForm() {
+        iTDat.pBPoint = GetMemBox(NDim);
+        iTDat.pBIncumb = GetMemBox(NDim);
+        iTDat.pBIncumb->F.upper() = DBL_MAX;
+        iTDat.pBIncumb->F.lower() = DBL_MAX;
+        iTDat.rVector.resize(NDim);
+    }
 
+public:
+    DivideForm() {
+
+    }
 };
 
-
-
-
-/**
- * Como instanciamos la clase, ejemplo de uso  
-**/
 int main() {
-    GenericForm<10,10, double> myObject; // F es 10, Ts contiene int y double
-    myObject.DivideForm(); // Imprime "MyForm"
+    GenericForm<10,10, double> myObject;
 }

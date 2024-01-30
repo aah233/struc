@@ -34,12 +34,10 @@ int main(int argc, char *argv[])
 {
  int i;
  double		Alpha;		//Termination criterion diam([LB,incumb])<=Alpha.
- ConstData	CtD;		//ConstantData. See utils.h
  PBTB		pbtb=NULL;	//AVL Tree of boxes.
  PBOX		pB =NULL;	//Pointer to a box. esta es la caja que se divide 
  PBOX		pB1=NULL; //esta es la caja que genera al dividir 
  PBOX		pB2=NULL; // segunda caja al dividir 
- iTDAT		iTDat;		//Temporal interval data
  int pCounters[NCounters];		//See defines.h.
  int PrevNUpInc;		//The number of N.Incumb impro. before an iteration. el mejor valor que se tiene y este es el 
  // numero de veces que se ha mejorado 
@@ -55,15 +53,9 @@ int main(int argc, char *argv[])
  
  GetParams (argc,argv,CtD,Alpha); // Cogemos los paremtro de entrada de la terminal 
  PrintParams(stderr,CtD,Alpha); // los imprime para ver que estan bien 
- int NDim=CtD.NDim; // ctD almacena todos los datos contantes
+ 
  
  pbtb=NewBTB(pbtb);  //creamos un nuevo de arbol binario de cajas a null 
- //Two temporal boxes and one rvector to avoid memory calls
- iTDat.pBPoint =GetMemBox(NDim); //datos del intervalor  coge memeria para un punto interv
- iTDat.pBIncumb=GetMemBox(NDim); // el punto que ha dejado el mas bajo, es decir el mejor 
- iTDat.pBIncumb->F.upper()=DBL_MAX; // al inicio los dos son iguales
- iTDat.pBIncumb->F.lower()=DBL_MAX; //  "" y los dos son los maximos 
- iTDat.rVector.resize(NDim);  // vector de reales inicializado 
 
  //Init first Box
  pB=InitBox(CtD,iTDat,pCounters); // caja inicial 
