@@ -385,21 +385,28 @@ PBOX FreeBox(PBOX pB,ConstData & CtD,const BOOL Fill, PCHARCt Color)
 }
 
 /*---------------------------------------------------------------------------*/
+
+//the idea is get a generic box, to divide 
 void DivideBox(PBOX &pB, PBOX &pB1, PBOX &pB2, ConstData & CtD, iTDAT &iTDat,
 			   PINT pCounters)
 {
- int NDim=CtD.NDim; 
- int CoorToDivide=-1;
- double Middle;
+
+ //pB =NULL;	//Pointer to a box. esta es la caja que se divide 
+ //pB1=NULL; //esta es la caja que genera al dividir 
+ //pB2=NULL; // segunda caja al dividir 
+ int NDim=CtD.NDim;  //Dim of the box 
+ int CoorToDivide=-1; //Coordinate to divide
+ double Middle;  //Middle of the coordinate to divide
+ 
+
  if (pB==NULL)
     {
-     fputs("DivideBox:null box pointer.",stderr);
-     exit(1);
+     fputs("DivideBox:null box pointer.",stderr);1
     }
     
  for (int i=0;i<NDim;i++)
- 	 if (EQ(width(pB->pX[i]),pB->Size))
- 	 	CoorToDivide=i;
+ 	 if (EQ(width(pB->pX[i]),pB->Size)) //comprobamos si es la misma 
+ 	 	CoorToDivide=i; // si es la misma la coordenada para dividir es i 
  if (CoorToDivide==-1)
  	{
  	 fprintf(stderr,"DivideBox: CoorToDivide not found.\n");

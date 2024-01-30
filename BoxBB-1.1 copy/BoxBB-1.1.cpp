@@ -93,7 +93,9 @@ int main(int argc, char *argv[])
 		 if (pCounters[CNIters] > 2)
 			exit(1);
 		 #endif
-
+		/*
+			* Divide the box in two. The first one inherits the data structure	
+		*/
 		DivideBox (pB,pB1,pB2,CtD,iTDat,pCounters); //este cambia 
 		#if (PRINT==1)
  		PrintBox(stderr,pB1,NDim);
