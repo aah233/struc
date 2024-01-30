@@ -1,5 +1,5 @@
 /******************************************************************************
-			btbox.c  - description
+			btsimplex.c  - description
 			----------------------
 	begin		: August 2004
 	copywirght	: (C) 2004 by L.G.Casado.
@@ -13,70 +13,65 @@
 #include "defines.h"
 #include "getmem.h"
 #include "iutils.hpp"
+#include "vertex.hpp"
 #include "Functions.hpp"  
-#include "box.hpp"
-#include "listbox.h"
-#include "btbox.h"
+#include "btvertex.h"
+#include "simplex.hpp"
+#include "listsimplex.h"
+#include "InputOutput.hpp"
+#include "btsimplex.h"
 
 
 using namespace std;
 
 
 /*---------------------------------------------------------------------------*/
-
-/**
- * Creates a new BTBNODE with the given PBOX.
- *
- * @param pB The PBOX to be inserted into the BTBNODE. - This is that we need to Generic 
- * @return A pointer to the newly created BTBNODE.
- */
-
-PBTBNODE NewBTBNODE(PBOX pB)
+PBTSNODE NewBTSNODE(PSIMPLEX pS)
 {
-   PBTBNODE pBTBNode;
-   
-   pBTBNode = (PBTBNODE)GetMem(1, sizeof(BTBNODE), "NewBTBNODE");
-   pBTBNode->plB = NewListB(pBTBNode->plB);
-   InsertListB(pBTBNode->plB, pB);
-   pBTBNode->Balance = EQUAL;
-   pBTBNode->pleft = NULL;
-   pBTBNode->pright = NULL;
-   return pBTBNode;
+ PBTSNODE pBTSNode;
+ 
+ pBTSNode	   = (PBTSNODE)GetMem(1,sizeof(BTSNODE),"NewBTSNODE");
+ pBTSNode->plS     = NewListS(pBTSNode->plS);
+ InsertListS(pBTSNode->plS, pS);
+ pBTSNode->Balance = EQUAL;
+ pBTSNode->pleft   = NULL;
+ pBTSNode->pright  = NULL;
+ return pBTSNode;
 }
 
 /*---------------------------------------------------------------------------*/
-PBTBNODE FreeBTBNode(PBTBNODE pBTBNode, ConstData & CtD,
+PBTSNODE FreeBTSNode(PBTSNODE pBTSNode, ConstData & CtD,PBTV pbtv,
                      const BOOL Fill, PCHARCt Color)
 {
- if (pBTBNode==NULL)
+ if (pBTSNode==NULL)
     {
-     fprintf(stderr,"Trying to free a NULL BTBNODE pointer.\n");
+     fprintf(stderr,"Trying to free a NULL BTSNODE pointer.\n");
      exit(1);
     }
- pBTBNode->plB=FreeListB(pBTBNode->plB,CtD,Fill,Color);
- free((PVOID)pBTBNode);
- pBTBNode=NULL;
- return pBTBNode;   
+ pBTSNode->plS=FreeListS(pBTSNode->plS,CtD,pbtv,Fill,Color);
+ free((PVOID)pBTSNode);
+ pBTSNode=NULL;
+ return pBTSNode;   
 }
 
 /*----------------------------------------------------------------------------*/
 /*Swap the nodes, but the structure of the BLTree does not change.            */
-VOID SwapBTBNode(PBTBNODE pBTBNodeO, PBTBNODE pBTBNodeT)
+VOID SwapBTSNode(PBTSNODE pBTSNodeO, PBTSNODE pBTSNodeT)
 {
- PLISTB plB;
+ PLISTS plS;
  
- plB            = pBTBNodeO->plB;
- pBTBNodeO->plB = pBTBNodeT->plB;
- pBTBNodeT->plB = plB;
+ plS            = pBTSNodeO->plS;
+ pBTSNodeO->plS = pBTSNodeT->plS;
+ pBTSNodeT->plS = plS;
 }
 
 /*----------------------------------------------------------------------------*/
-/*Swap the data and copy the Balance and pointers of the BTBNodes.            */
+/*Swap the data and copy the Balance and pointers of the BTSNodes.            */
 /*Node2 will be removed with data of node1 after exchange.                    */
 /*----------------------------------------------------------------------------*/
-VOID ExchangeNode(PBTBNODE node1, PBTBNODE node2)
+VOID ExchangeNode(PBTSNODE node1, PBTSNODE node2)
 {
- SwapBTBNode(node1,node2);
+ SwapBTSNode(node1,node2);
  node1->Balance = node2->Balance;
  node1->pleft   = node2->pleft;
  node1->pright  = node2->pright;
@@ -86,179 +81,179 @@ VOID ExchangeNode(PBTBNODE node1, PBTBNODE node2)
 } 
 
 /*---------------------------------------------------------------------------*/
-void PrintBTBSubTreeInOrder(FILE * FOut, PBTBNODE node, const INT NDim)
+void PrintBTSSubTreeInOrder(FILE * FOut, PBTSNODE node, const INT NDim)
 {
  if (node!=NULL)
     {
-     PrintBTBSubTreeInOrder(FOut,node->pleft,  NDim);
-     fprintf(FOut,"BTB(%d)->",node->Balance);
-     //PrintListB (FOut,node->plB,NDim,MonTest);
-     cerr << "SelectIndex=" <<  node->plB->pFirstLB->pB->F << endl;
-     PrintBTBSubTreeInOrder(FOut,node->pright, NDim);
+     PrintBTSSubTreeInOrder(FOut,node->pleft,  NDim);
+     fprintf(FOut,"BTS(%d)->",node->Balance);
+     //PrintListS (FOut,node->plS,NDim,MonTest);
+     cerr << "SelectIndex=" <<  node->plS->pFirstLS->pS->F << endl;
+     PrintBTSSubTreeInOrder(FOut,node->pright, NDim);
     }
   else
-     fprintf(FOut,"BTB:N\n");
+     fprintf(FOut,"BTS:N\n");
 }
 
 /*---------------------------------------------------------------------------*/
-void NElemBTBSubTree(PBTBNODE node, int &NElem)
+void NElemBTSSubTree(PBTSNODE node, int &NElem)
 {
  if (node!=NULL)
     {
-     NElem+=node->plB->NElem;
-     NElemBTBSubTree(node->pleft,  NElem);
-     NElemBTBSubTree(node->pright, NElem);
+     NElem+=node->plS->NElem;
+     NElemBTSSubTree(node->pleft,  NElem);
+     NElemBTSSubTree(node->pright, NElem);
     }
 }
 
 /*---------------------------------------------------------------------------*/
 //Traverses the AVL tree in Order to see if data is ordered 
-void CheckBTBSubTreeOrder(PBTBNODE node, itv & PrevItv, BOOL & First)
+void CheckBTSSubTreeOrder(PBTSNODE node, itv & PrevItv, BOOL & First)
 {
  if (node!=NULL)
     {
-     CheckBTBSubTreeOrder(node->pleft, PrevItv, First);
+     CheckBTSSubTreeOrder(node->pleft, PrevItv, First);
      if (First)
         {
-         PrevItv=node->plB->pFirstLB->pB->F;
+         PrevItv=node->plS->pFirstLS->pS->F;
          //cerr << "First PrevItv=" << PrevItv << endl;
          First=False;
         }
      else
         {
-         if (iLE(PrevItv,node->plB->pFirstLB->pB->F))
+         if (iLE(PrevItv,node->plS->pFirstLS->pS->F))
             {
              //cerr << "-----------------------" << endl;
              //cerr << "PrevItv=" << PrevItv << endl;
-             //cerr << "CurrItv=" << node->plB->pFirstLB->pB->F << endl;
-             PrevItv=(node->plB->pFirstLB->pB->F);
+             //cerr << "CurrItv=" << node->plS->pFirstLS->pS->F << endl;
+             PrevItv=(node->plS->pFirstLS->pS->F);
             } 
          else
             {
              cerr << "-----------------------" << endl;
              cerr << "PrevItv=" << PrevItv << endl;
-             cerr << "CurrItv=" << node->plB->pFirstLB->pB->F << endl;
+             cerr << "CurrItv=" << node->plS->pFirstLS->pS->F << endl;
              exit(1);
             } 
          }              
-     CheckBTBSubTreeOrder(node->pright, PrevItv, First);     
+     CheckBTSSubTreeOrder(node->pright, PrevItv, First);     
     }
 }
 
 /*---------------------------------------------------------------------------*/
-void CheckBTBOrder(PBTB pbtb)
+void CheckBTSOrder(PBTS pbts)
 {
  itv PrevItv;
  BOOL First=True;
  
- if ( pbtb->pFirstBTBNode==NULL || 
-     (pbtb->pFirstBTBNode->pleft==NULL && pbtb->pFirstBTBNode->pright==NULL))
+ if ( pbts->pFirstBTSNode==NULL || 
+     (pbts->pFirstBTSNode->pleft==NULL && pbts->pFirstBTSNode->pright==NULL))
     return;
  else    
-    CheckBTBSubTreeOrder(pbtb->pFirstBTBNode, PrevItv, First);     
+    CheckBTSSubTreeOrder(pbts->pFirstBTSNode, PrevItv, First);     
 }
 
 
 /*---------------------------------------------------------------------------*/
-void PrintBTBSubTree(FILE * FOut,PBTBNODE node, const INT NDim)
+void PrintBTSSubTree(FILE * FOut,PBTSNODE node, const INT NDim)
 {
  if (node!=NULL)
     {
-     fprintf(FOut,"BTB(%d)->",node->Balance);
-     //PrintListB (FOut,node->plB,NDim,MonTest);
-     cerr << "SelectIndex=" <<  node->plB->pFirstLB->pB->F << endl;
-     PrintBTBSubTree(FOut,node->pleft,  NDim);
-     PrintBTBSubTree(FOut,node->pright, NDim);
+     fprintf(FOut,"BTS(%d)->",node->Balance);
+     //PrintListS (FOut,node->plS,NDim,MonTest);
+     cerr << "SelectIndex=" <<  node->plS->pFirstLS->pS->F << endl;
+     PrintBTSSubTree(FOut,node->pleft,  NDim);
+     PrintBTSSubTree(FOut,node->pright, NDim);
     }
   else
-     fprintf(FOut,"BTB:N\n");
+     fprintf(FOut,"BTS:N\n");
 }
 
 
 /*---------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------*/
-PBTB NewBTB(PBTB pBTB)
+PBTS NewBTS(PBTS pBTS)
 {
- pBTB                 = (PBTB) GetMem(1,sizeof(BTB),"NewBTB");
- pBTB->NElem          = 0;
- pBTB->MaxNElem       = 0;	
- pBTB->pFirstBTBNode  = NULL;
- return pBTB;
+ pBTS                 = (PBTS) GetMem(1,sizeof(BTS),"NewBTS");
+ pBTS->NElem          = 0;
+ pBTS->MaxNElem       = 0;	
+ pBTS->pFirstBTSNode  = NULL;
+ return pBTS;
 }
 
 /*----------------------------------------------------------------------------*/
-void FreeBTBSubTree(PBTBNODE root, ConstData &CtD,
+void FreeBTSSubTree(PBTSNODE root, ConstData &CtD, PBTV pbtv,
                     const BOOL Fill, PCHARCt Color)
 {
  if (root!=NULL)
     {
-     //fprintf(stderr,"FreeBTBSubTree:Left,\n");
-     FreeBTBSubTree(root->pleft,CtD,Fill,Color);
-     //fprintf(stderr,"FreeBTBSubTree:Right,\n");
-     FreeBTBSubTree(root->pright,CtD,Fill,Color);
-     //fprintf(stderr,"FreeBTBSubTree: FreeBTBNode,\n");
-     root=FreeBTBNode(root,CtD,Fill,Color);     
+     //fprintf(stderr,"FreeBTSSubTree:Left,\n");
+     FreeBTSSubTree(root->pleft,CtD,pbtv,Fill,Color);
+     //fprintf(stderr,"FreeBTSSubTree:Right,\n");
+     FreeBTSSubTree(root->pright,CtD,pbtv,Fill,Color);
+     //fprintf(stderr,"FreeBTSSubTree: FreeBTSNode,\n");
+     root=FreeBTSNode(root,CtD,pbtv,Fill,Color);     
     }
 // else
-//    fprintf(stderr,"FreeBTBSubTree: NULL,\n");   
+//    fprintf(stderr,"FreeBTSSubTree: NULL,\n");   
 }
 
 /*----------------------------------------------------------------------------*/
-PBTB FreeBTB(PBTB pbtb, ConstData CtD, const BOOL Fill, 
+PBTS FreeBTS(PBTS pbts, PBTV pbtv, ConstData CtD, const BOOL Fill, 
              PCHARCt Color)
 {
- if (pbtb!=NULL)
+ if (pbts!=NULL)
     {
     //////////////////
-     FreeBTBSubTree(pbtb->pFirstBTBNode,CtD,Fill,Color);
-     pbtb->pFirstBTBNode=NULL;
-     free((PVOID)pbtb);
-     pbtb=NULL;
+     FreeBTSSubTree(pbts->pFirstBTSNode,CtD,pbtv,Fill,Color);
+     pbts->pFirstBTSNode=NULL;
+     free((PVOID)pbts);
+     pbts=NULL;
     }
  return NULL;   
 }
 
 /*---------------------------------------------------------------------------*/
-int CountNElemBTB(PBTB pbtb)
+int CountNElemBTS(PBTS pbts)
 {
  int NElem=0;
- NElemBTBSubTree(pbtb->pFirstBTBNode,NElem);     
+ NElemBTSSubTree(pbts->pFirstBTSNode,NElem);     
  return NElem;
 }
 
 /*---------------------------------------------------------------------------*/
-void PrintBTB(FILE * FOut, PBTB pbtb, const INT NDim)
+void PrintBTS(FILE * FOut, PBTS pbts, const INT NDim)
 {
- fprintf(FOut,"\n---------------------PrintBTB-----------------------\n");
- if (pbtb!=NULL)
+ fprintf(FOut,"\n---------------------PrintBTS-----------------------\n");
+ if (pbts!=NULL)
     {
-     fprintf(FOut,"BTB:Number of Elements     = %d\n",pbtb->NElem);
-     fprintf(FOut,"BTB:Max Number of Elements = %d\n",pbtb->MaxNElem);
-     PrintBTBSubTree(FOut,pbtb->pFirstBTBNode,NDim);    
+     fprintf(FOut,"BTS:Number of Elements     = %d\n",pbts->NElem);
+     fprintf(FOut,"BTS:Max Number of Elements = %d\n",pbts->MaxNElem);
+     PrintBTSSubTree(FOut,pbts->pFirstBTSNode,NDim);    
     }
   else
-     fprintf(stderr,"BTB:N\n");
- fputs("---------------------End-PrintBTB-------------------\n",stderr);     
+     fprintf(stderr,"BTS:N\n");
+ fputs("---------------------End-PrintBTS-------------------\n",stderr);     
 }
 
 
 /*----------------------------------------------------------------------------*/
 /*Rotate left a binary Tree                                                   */
 /*----------------------------------------------------------------------------*/
-PBTBNODE RotateTreeLeft(PBTBNODE root)
+PBTSNODE RotateTreeLeft(PBTSNODE root)
 {
- PBTBNODE Temp;
+ PBTSNODE Temp;
 
  if (root==NULL)
     {
-     fprintf(stderr,"BTBimplex::RotateTreeLeft :");;
+     fprintf(stderr,"BTSimplex::RotateTreeLeft :");;
      fprintf(stderr," Can not rotate to left an empty tree \n");
      exit(1);
     }
  else
     if (root->pright==NULL)
        {
-        fprintf(stderr,"BTBimplex::RotateTreeLeft : Can not rotate to left\n");
+        fprintf(stderr,"BTSimplex::RotateTreeLeft : Can not rotate to left\n");
         exit(1);
        }
     else
@@ -273,20 +268,20 @@ PBTBNODE RotateTreeLeft(PBTBNODE root)
 /*----------------------------------------------------------------------------*/
 /*Rotate right a binary Tree                                                  */
 /*----------------------------------------------------------------------------*/
-PBTBNODE RotateTreeRight(PBTBNODE root)
+PBTSNODE RotateTreeRight(PBTSNODE root)
 {
- PBTBNODE Temp;
+ PBTSNODE Temp;
  
  if (root==NULL)
     {
-     fprintf(stderr,"BTBimplex::RotateTreeRight :");
+     fprintf(stderr,"BTSimplex::RotateTreeRight :");
      fprintf(stderr," Can not rotate to right an empty tree \n");
      exit(1);
     }
  else
     if (root->pleft==NULL)
        {
-        fprintf(stderr,"BTBimplex::RotateTreeRight:Can not rotate to right\n");
+        fprintf(stderr,"BTSimplex::RotateTreeRight:Can not rotate to right\n");
         exit(1);
        }
     else
@@ -305,9 +300,9 @@ PBTBNODE RotateTreeRight(PBTBNODE root)
 /*changed appropiately and rotations may be done. Taller has efects only as  */
 /*return value. We initiate it to false.                                     */
 /*---------------------------------------------------------------------------*/
-PBTBNODE LeftInsertTreeBalance(PBTBNODE root, PBOOL ptaller)
+PBTSNODE LeftInsertTreeBalance(PBTSNODE root, PBOOL ptaller)
 {
- PBTBNODE Left, LeftRight;
+ PBTSNODE Left, LeftRight;
 
  Left=root->pleft;
  switch (Left->Balance)
@@ -319,7 +314,7 @@ PBTBNODE LeftInsertTreeBalance(PBTBNODE root, PBOOL ptaller)
               *ptaller=False;
               break;
          case EQUAL:
-              fprintf(stderr,"BTBimplex:LeftInsertTreeBalance :");
+              fprintf(stderr,"BTSimplex:LeftInsertTreeBalance :");
 	      fprintf(stderr," The tree is already balanced\n");
               exit(1);
               break;
@@ -353,9 +348,9 @@ PBTBNODE LeftInsertTreeBalance(PBTBNODE root, PBOOL ptaller)
 /*---------------------------------------------------------------------------*/
 /*Analogous to previous one but on the right.                                */
 /*---------------------------------------------------------------------------*/
-PBTBNODE RightInsertTreeBalance(PBTBNODE root, PBOOL ptaller)
+PBTSNODE RightInsertTreeBalance(PBTSNODE root, PBOOL ptaller)
 {
- PBTBNODE Right, RightLeft;
+ PBTSNODE Right, RightLeft;
 
  Right=root->pright;
  switch (Right->Balance)
@@ -383,7 +378,7 @@ PBTBNODE RightInsertTreeBalance(PBTBNODE root, PBOOL ptaller)
               *ptaller=False;
               break;
          case EQUAL:
-              fprintf(stderr,"BTBimplex:RightInsertTreeBalance: ");
+              fprintf(stderr,"BTSimplex:RightInsertTreeBalance: ");
 	      fprintf(stderr,"The tree is already balanced\n");
               exit(1);
               break;
@@ -399,23 +394,23 @@ PBTBNODE RightInsertTreeBalance(PBTBNODE root, PBOOL ptaller)
 
 
 /*---------------------------------------------------------------------------*/
-/*Do the actual insertion in the BTBimplex.                                  */
+/*Do the actual insertion in the BTSimplex.                                  */
 /*---------------------------------------------------------------------------*/ 
-PBTBNODE InsertTree (PBTBNODE root, PBOX pB, PBOOL ptaller)
+PBTSNODE InsertTree (PBTSNODE root, PSIMPLEX pS, PBOOL ptaller)
 {
  if (root==NULL)
     {
-     root     = NewBTBNODE(pB); /*Initiate the list with pB.*/
+     root     = NewBTSNODE(pS); /*Initiate the list with pS.*/
      *ptaller = True; /*Only in this case the tree balanced label are changed*/
     }
  else
     {
-     if (iEQ(pB->F,root->plB->pFirstLB->pB->F))
-         InsertListB(root->plB, pB);
+     if (iEQ(pS->F,root->plS->pFirstLS->pS->F))
+         InsertListS(root->plS, pS);
      else
-         if (iLT(pB->F,root->plB->pFirstLB->pB->F))
+         if (iLT(pS->F,root->plS->pFirstLS->pS->F))
             {
-             root->pleft=InsertTree(root->pleft,pB,ptaller);
+             root->pleft=InsertTree(root->pleft,pS,ptaller);
              if (*ptaller)
                 switch (root->Balance)
                        {
@@ -433,7 +428,7 @@ PBTBNODE InsertTree (PBTBNODE root, PBOX pB, PBOOL ptaller)
             }
          else
             {
-             root->pright=InsertTree(root->pright,pB,ptaller);
+             root->pright=InsertTree(root->pright,pS,ptaller);
              if (*ptaller)
                 switch (root->Balance)
                        {
@@ -454,16 +449,16 @@ PBTBNODE InsertTree (PBTBNODE root, PBOX pB, PBOOL ptaller)
 }
 
 /*---------------------------------------------------------------------------*/
-VOID InsertBTB(PBTB pbtb, PBOX pB)
+VOID InsertBTS(PBTS pbts, PSIMPLEX pS)
 {
  BOOL taller = False;
 
- pbtb->pFirstBTBNode=InsertTree(pbtb->pFirstBTBNode,pB,&taller);
+ pbts->pFirstBTSNode=InsertTree(pbts->pFirstBTSNode,pS,&taller);
 
- pbtb->NElem++;
+ pbts->NElem++;
  
- if (pbtb->NElem > pbtb->MaxNElem)
-     pbtb->MaxNElem = pbtb->NElem;
+ if (pbts->NElem > pbts->MaxNElem)
+     pbts->MaxNElem = pbts->NElem;
 	
 }
 
@@ -472,9 +467,9 @@ VOID InsertBTB(PBTB pbtb, PBOX pB)
 /*Update the balance factors and do the necesary rotations when a left node  */
 /*is removed.                                                                */
 /*---------------------------------------------------------------------------*/
-PBTBNODE LeftDelTreeBalance (PBTBNODE root, PBOOL pshorter)
+PBTSNODE LeftDelTreeBalance (PBTSNODE root, PBOOL pshorter)
 {
- PBTBNODE Left, LeftRight;
+ PBTSNODE Left, LeftRight;
 
  Left=root->pleft;
  switch (Left->Balance)
@@ -516,9 +511,9 @@ PBTBNODE LeftDelTreeBalance (PBTBNODE root, PBOOL pshorter)
 /*---------------------------------------------------------------------------*/
 /*Analogous to previous one but on the right.                                */
 /*---------------------------------------------------------------------------*/
-PBTBNODE RightDelTreeBalance (PBTBNODE root, PBOOL pshorter)
+PBTSNODE RightDelTreeBalance (PBTSNODE root, PBOOL pshorter)
 {
- PBTBNODE Right, RightLeft;
+ PBTSNODE Right, RightLeft;
 
  Right=root->pright;
  switch (Right->Balance)
@@ -558,14 +553,14 @@ PBTBNODE RightDelTreeBalance (PBTBNODE root, PBOOL pshorter)
 }
 
 /*---------------------------------------------------------------------------*/
-/*With Pop=False the whole list is removed and pB=NULL                       */
+/*With Pop=False the whole list is removed and pS=NULL                       */
 /*---------------------------------------------------------------------------*/
-PBTBNODE ExtractNodeEqual (PBTBNODE root, PPBOX ppB, ConstData &CtD, 
-                           itv & SelectIndex, 
+PBTSNODE ExtractNodeEqual (PBTSNODE root, PPSIMPLEX ppS, ConstData &CtD, 
+                           PBTV pbtv, itv & SelectIndex, 
                            PBOOL pshorter, const BOOL Pop, 
 			               PINT pNFree, const BOOL Fill, PCHARCt Color)
 {
- PBTBNODE Temp;
+ PBTSNODE Temp;
  
  if (root==NULL)
     {
@@ -577,23 +572,23 @@ PBTBNODE ExtractNodeEqual (PBTBNODE root, PPBOX ppB, ConstData &CtD,
     }     
  else  
     {     	      
-     if (iEQ(SelectIndex,root->plB->pFirstLB->pB->F))
+     if (iEQ(SelectIndex,root->plS->pFirstLS->pS->F))
         {
 	     if (Pop)
 	        {
-	         (*ppB)=ExtractListB(root->plB);
+	         (*ppS)=ExtractListS(root->plS);
 	         (*pNFree)=1;
 	        }	
 	    
 	     /*The later and next can run at the same time*/           
-         if (Pop == False || root->plB->NElem == 0) /*Remove the hole node*/
+         if (Pop == False || root->plS->NElem == 0) /*Remove the hole node*/
 	        {
 	         if (Pop==False)
-	            (*pNFree)=root->plB->NElem;
+	            (*pNFree)=root->plS->NElem;
 	            
 	         if (root->pleft==NULL && root->pright==NULL)
         	    { 
-		         root=FreeBTBNode(root,CtD,Fill,Color);
+		         root=FreeBTSNode(root,CtD,pbtv,Fill,Color);
         	     (*pshorter)=True;     
         	    }    	    
 	         else
@@ -602,7 +597,7 @@ PBTBNODE ExtractNodeEqual (PBTBNODE root, PPBOX ppB, ConstData &CtD,
         	        Temp=root->pright;
         	        ExchangeNode(root,Temp); 
         	        (*pshorter)=True;   
-        	        Temp=FreeBTBNode(Temp,CtD,Fill,Color);
+        	        Temp=FreeBTSNode(Temp,CtD,pbtv,Fill,Color);
         	       } 
         	    else
         	       if (root->pright==NULL)
@@ -610,13 +605,13 @@ PBTBNODE ExtractNodeEqual (PBTBNODE root, PPBOX ppB, ConstData &CtD,
                        Temp=root->pleft;
                        ExchangeNode(root,Temp);
                        (*pshorter)=True;   
-                       Temp=FreeBTBNode(Temp,CtD,Fill,Color);
+                       Temp=FreeBTSNode(Temp,CtD,pbtv,Fill,Color);
                       } 
         	       else
                       {
                        for (Temp=root->pright;Temp->pleft!=NULL;Temp=Temp->pleft);
-                       SwapBTBNode(root,Temp);  
-                       root->pright=ExtractNodeEqual(root->pright,ppB,CtD, 
+                       SwapBTSNode(root,Temp);  
+                       root->pright=ExtractNodeEqual(root->pright,ppS,CtD,pbtv, 
 		                                         SelectIndex,pshorter,
 						                         Pop,pNFree,Fill,Color);
                        if (*pshorter)
@@ -637,9 +632,9 @@ PBTBNODE ExtractNodeEqual (PBTBNODE root, PPBOX ppB, ConstData &CtD,
 	        }
 	}    	      
      else
-        if (iLT(SelectIndex,root->plB->pFirstLB->pB->F) )
+        if (iLT(SelectIndex,root->plS->pFirstLS->pS->F) )
            {
-            root->pleft=ExtractNodeEqual(root->pleft,ppB,CtD, 
+            root->pleft=ExtractNodeEqual(root->pleft,ppS,CtD,pbtv, 
 		                                 SelectIndex,pshorter,
 				                         Pop,pNFree,Fill,Color);
             if (*pshorter)
@@ -659,7 +654,7 @@ PBTBNODE ExtractNodeEqual (PBTBNODE root, PPBOX ppB, ConstData &CtD,
            }
         else
            {
-            root->pright=ExtractNodeEqual(root->pright,ppB,CtD, 
+            root->pright=ExtractNodeEqual(root->pright,ppS,CtD,pbtv, 
 		                                  SelectIndex,pshorter,
 				                          Pop,pNFree,Fill,Color);
             if (*pshorter)
@@ -682,7 +677,7 @@ PBTBNODE ExtractNodeEqual (PBTBNODE root, PPBOX ppB, ConstData &CtD,
 }
 
 /*---------------------------------------------------------------------------*/
-VOID ExtractEqualBTB (PBTB pbtb, PPBOX ppB, ConstData & CtD, 
+VOID ExtractEqualBTS (PBTS pbts, PPSIMPLEX ppS, ConstData & CtD, PBTV pbtv, 
                       itv & SelectIndex, const BOOL Pop, const BOOL Fill,
                       PCHARCt Color)
 {
@@ -691,8 +686,8 @@ VOID ExtractEqualBTB (PBTB pbtb, PPBOX ppB, ConstData & CtD,
  //
  /*INT OldEl,CalcOldEl,CalcNewEl;
  
- OldEl=pbtb->NElem;
- CalcOldEl=CountNElemBTB(pbtb);;
+ OldEl=pbts->NElem;
+ CalcOldEl=CountNElemBTS(pbts);;
  
  if (OldEl!=CalcOldEl)
     {
@@ -700,21 +695,21 @@ VOID ExtractEqualBTB (PBTB pbtb, PPBOX ppB, ConstData & CtD,
      exit(1);
     }
  else
-    fprintf(stderr,"pbtb->NElem=%d.\n", OldEl);  
+    fprintf(stderr,"pbts->NElem=%d.\n", OldEl);  
  */
  //
- pbtb->pFirstBTBNode = ExtractNodeEqual(pbtb->pFirstBTBNode,ppB,CtD,
+ pbts->pFirstBTSNode = ExtractNodeEqual(pbts->pFirstBTSNode,ppS,CtD,pbtv,
                                         SelectIndex,&shorter,Pop,&NFree,
                                         Fill,Color);
- pbtb->NElem-=NFree;
+ pbts->NElem-=NFree;
  
  //
  /*
- CalcNewEl=CountNElemBTB(pbtb);
- if (pbtb->NElem != CalcNewEl)
+ CalcNewEl=CountNElemBTS(pbts);
+ if (pbts->NElem != CalcNewEl)
     {
-     fprintf(stderr,"OldEl=%d, NFree=%d, pbtb->NElem=%d, CaclNewEl=%d.\n",
-                     OldEl,NFree,pbtb->NElem,CalcNewEl);
+     fprintf(stderr,"OldEl=%d, NFree=%d, pbts->NElem=%d, CaclNewEl=%d.\n",
+                     OldEl,NFree,pbts->NElem,CalcNewEl);
      exit(1);       
     }
  //
@@ -725,35 +720,35 @@ VOID ExtractEqualBTB (PBTB pbtb, PPBOX ppB, ConstData & CtD,
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
 /*---------------------------------------------------------------------------*/
-PBTBNODE ExtractSmallerNode(PBTBNODE root, PPBOX ppB, ConstData & CtD,
-                            itv & SelectIndex, 
+PBTSNODE ExtractSmallerNode(PBTSNODE root, PPSIMPLEX ppS, ConstData & CtD,
+                            PBTV pbtv, itv & SelectIndex, 
                             PBOOL pshorter, const BOOL Fill, PCHARCt Color)
 {
- PBTBNODE Temp;
+ PBTSNODE Temp;
  
  if (root==NULL)
     {
-     fprintf(stderr,"BTBNODE,ExtractSmallerNode: Empty BTB\n");
+     fprintf(stderr,"BTSNODE,ExtractSmallerNode: Empty BTS\n");
      exit(1);
     }     
 
  if (root->pleft!=NULL)
-    root->pleft= ExtractSmallerNode(root->pleft,ppB,CtD,SelectIndex, 
+    root->pleft= ExtractSmallerNode(root->pleft,ppS,CtD,pbtv,SelectIndex, 
      				    pshorter,Fill,Color);	     
  else
     {
-     (*ppB)        = ExtractListB(root->plB);
-     SelectIndex = (*ppB)->F;
+     (*ppS)        = ExtractListS(root->plS);
+     SelectIndex = (*ppS)->F;
     } 
     
  /*Check if the node have to be removed*/ 
- if (root->plB->NElem==0 || iEQ(SelectIndex,root->plB->pFirstLB->pB->F) ) 
+ if (root->plS->NElem==0 || iEQ(SelectIndex,root->plS->pFirstLS->pS->F) ) 
     { 
-     if (root->plB->NElem == 0 ) 
+     if (root->plS->NElem == 0 ) 
         {
 	     if (root->pleft==NULL && root->pright==NULL)
 	        {
-	         root=FreeBTBNode(root,CtD,Fill,Color);
+	         root=FreeBTSNode(root,CtD,pbtv,Fill,Color);
 	         (*pshorter)=True; 
 	         /*The new Smaller value was given in the path*/    
 	        } 
@@ -762,7 +757,7 @@ PBTBNODE ExtractSmallerNode(PBTBNODE root, PPBOX ppB, ConstData & CtD,
 	         Temp=root->pright;
 	         ExchangeNode(root,Temp); 
 	         *pshorter=True;   
-	         Temp=FreeBTBNode(Temp,CtD,Fill,Color);
+	         Temp=FreeBTSNode(Temp,CtD,pbtv,Fill,Color);
 	        } 
  	    }
     }    	      
@@ -789,31 +784,31 @@ PBTBNODE ExtractSmallerNode(PBTBNODE root, PPBOX ppB, ConstData & CtD,
 
 
 /*---------------------------------------------------------------------------*/
-VOID ExtractSmallerBTB (PBTB pbtb, PPBOX ppB, ConstData & CtD,
+VOID ExtractSmallerBTS (PBTS pbts, PPSIMPLEX ppS, ConstData & CtD, PBTV pbtv,
                         const BOOL Fill, PCHARCt Color)
 {
  BOOL shorter = False;
  itv SelectIndex; //kv type.	
 
- pbtb->pFirstBTBNode=ExtractSmallerNode(pbtb->pFirstBTBNode,ppB,CtD,
+ pbts->pFirstBTSNode=ExtractSmallerNode(pbts->pFirstBTSNode,ppS,CtD,pbtv,
                                         SelectIndex,&shorter,Fill,Color);
- pbtb->NElem--;
+ pbts->NElem--;
 }
 
 /*---------------------------------------------------------------------------*/
-itv GetMaxBTBKey(PBTB pbtb)
+itv GetMaxBTSKey(PBTS pbts)
 {
- PBTBNODE Temp;
+ PBTSNODE Temp;
  
- if (pbtb->pFirstBTBNode==NULL)
+ if (pbts->pFirstBTSNode==NULL)
     {
-     fprintf(stderr,"GetMaxBTBKey: Empty BTB.\n");
+     fprintf(stderr,"GetMaxBTSKey: Empty BTS.\n");
      exit(1);
     } 
- Temp=pbtb->pFirstBTBNode;
+ Temp=pbts->pFirstBTSNode;
  while (Temp->pright!=NULL)
        Temp=Temp->pright;
- return Temp->plB->pFirstLB->pB->F;  
+ return Temp->plS->pFirstLS->pS->F;  
 }
 /*---------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------*/
