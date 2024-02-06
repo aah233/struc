@@ -396,7 +396,8 @@ void DivideBox(PBOX &pB, PBOX &pB1, PBOX &pB2, ConstData & CtD, iTDAT &iTDat,
      fputs("DivideBox:null box pointer.",stderr);
      exit(1);
     }
-    
+
+//Search the best coor to divide 
  for (int i=0;i<NDim;i++)
  	 if (EQ(width(pB->pX[i]),pB->Size))
  	 	CoorToDivide=i;

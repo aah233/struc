@@ -75,6 +75,8 @@ BOOL RangeUpTest(PBOX pB, iTDAT & iTDat)
 
 
 /*---------------------------------------------------------------------------*/
+//??Duda, como podriamos hacerlo generico??
+//?? Realmente como hace el test 
 PBOX TestBox(PBOX pB,ConstData & CtD,PBTB pbtb,PINT pCounters,iTDAT & iTDat)
 {
  if (pB==NULL)

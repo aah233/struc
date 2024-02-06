@@ -20,6 +20,7 @@
 
 using namespace std;
 
+//esto habra que pasarlo a clase 
 /*---------------------------------------------------------------------------*/
 INT GetNewNBox()
 {

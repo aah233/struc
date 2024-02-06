@@ -1,5 +1,12 @@
 {
     "files.associations": {
-        "listbox.h": "c"
+        "listbox.h": "c",
+        "ostream": "cpp",
+        "*.tcc": "cpp",
+        "deque": "cpp",
+        "list": "cpp",
+        "string": "cpp",
+        "vector": "cpp",
+        "valarray": "cpp"
     }
 }

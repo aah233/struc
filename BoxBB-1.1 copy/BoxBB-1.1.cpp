@@ -39,23 +39,9 @@ int main(int argc, char *argv[])
  PBOX		pB1=NULL; //esta es la caja que genera al dividir 
  PBOX		pB2=NULL; // segunda caja al dividir 
  int pCounters[NCounters];		//See defines.h.
- int PrevNUpInc;		//The number of N.Incumb impro. before an iteration. el mejor valor que se tiene y este es el 
- // numero de veces que se ha mejorado 
-  
- //std::cout.precision(17);
- setlocale(LC_NUMERIC,  "en_US.UTF-8"); // Use thousands separators
- cout.imbue(std::locale("en_US.UTF-8"));
- cerr.imbue(std::locale("en_US.UTF-8"));
 
- //Initiate the counters.
- for(i=0;i<NCounters;i++)
-    pCounters[i]=0;
- 
- GetParams (argc,argv,CtD,Alpha); // Cogemos los paremtro de entrada de la terminal 
- PrintParams(stderr,CtD,Alpha); // los imprime para ver que estan bien 
- 
- 
- pbtb=NewBTB(pbtb);  //creamos un nuevo de arbol binario de cajas a null 
+memset(pCounters, 0, sizeof(pCounters)); //Init 0 all pCounter 
+
 
  //Init first Box
  pB=InitBox(CtD,iTDat,pCounters); // caja inicial 
@@ -76,6 +62,13 @@ int main(int argc, char *argv[])
  #if (PRINT==1)
  cerr << "Incumbent =" << iTDat.pBIncumb->F << endl;
  #endif
+ //hay que calcular el tama;o de una caja 
+ //es el tama;o de la caja mas grande 
+ //entones para cada caja tomar el size 
+ // hasy dos arboles genericos 
+ //Si ha pasado los test y es los uficientemente peque;a, al arbol solucion 
+ //si no, la almacenamos en el otro arbol, de candidatos posibles 
+ //termiana, cuando el arbol de trabajo es 0 
  while (pB!=NULL && (iTDat.pBIncumb->F.upper() - pB->F.lower() > Alpha)) //alpha parametro de entrada 
  	   {
 		pCounters[CNIters]++; //N. Ierations
@@ -88,11 +81,17 @@ int main(int argc, char *argv[])
 		/*
 			* Divide the box in two. The first one inherits the data structure	
 		*/
-		DivideBox (pB,pB1,pB2,CtD,iTDat,pCounters); //este cambia 
+		vector x = this.x->DivideBox(CtD,iTDat,pCounters); //este cambia 
+		//for n cajas, se lo paso al evaluador
+		//Evaluador de la caja que esta dentro del divide 
+		//Test  -> si se almacena o no 
+		//Print y draw para las cajas 
+
 		#if (PRINT==1)
  		PrintBox(stderr,pB1,NDim);
  		PrintBox(stderr,pB2,NDim);
  		#endif
+		//?? EL TEXT BOX HABIA PENSADO PONERLO QUE LO MANEJE EL ARBOL 
 		pB1=TestBox(pB1,CtD,pbtb,pCounters,iTDat); //cambia ?¿ aqui elimina o inserta, claro la hace dentro y por lo tanto habria que ponerlo fuera 
 		pB2=TestBox(pB2,CtD,pbtb,pCounters,iTDat); //cambia 
 
