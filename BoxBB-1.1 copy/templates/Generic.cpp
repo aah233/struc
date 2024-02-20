@@ -4,7 +4,7 @@
 
 template<typename F, typename... Ts>
 class BOX {
-    itV F;
+    itV F*;
     
 public:
     // Virtual function, must be implemented by derived classes
