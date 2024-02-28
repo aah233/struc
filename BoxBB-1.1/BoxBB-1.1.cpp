@@ -52,9 +52,10 @@ int main(int argc, char *argv[])
  //Initiate the counters.
  for(i=0;i<NCounters;i++)
     pCounters[i]=0;
- 
+ //Este
  GetParams (argc,argv,CtD,Alpha); // Cogemos los paremtro de entrada de la terminal 
  PrintParams(stderr,CtD,Alpha); // los imprime para ver que estan bien 
+ //Y este 
  int NDim=CtD.NDim; // ctD almacena todos los datos contantes
  
  pbtb=NewBTB(pbtb);  //creamos un nuevo de arbol binario de cajas a null 

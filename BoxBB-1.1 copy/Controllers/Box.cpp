@@ -1,11 +1,21 @@
 #include "box.hpp"
 #include "utils.h"
 
+
+//  la dimension de  caja, que van a ser los dimensiones, es decir tantos vectores NDIM 
+// Los limites inferiores e inferiores 
+//tiene limites inferiores e inferiores por cada vector y un vector por cada dimension 
+//resice y creacion del 
 template <typename F, typename... Ts>
 class box : public BOX<F, Ts...>
 {
-    itV F;
-
+    int id; //numero de la caja, conforme se van creando 
+    double size; // del kv en el inixBox viene , que se queda con el intervalo mayor 
+    //itv F; //intervalo de la inclusion
+    //itvV G; //vector de derivada
+    itvV px; //va a ser el InitBox que seria como el inititvV
+    //IMplementar con el inputouput coger los parametros 
+    //Y usar el initBox
 public:
     // Implementación de la función virtual
     BOX<F, Ts...> compareTo(const BOX<F, Ts...> &T1, const BOX<F, Ts...> &T2) const override
