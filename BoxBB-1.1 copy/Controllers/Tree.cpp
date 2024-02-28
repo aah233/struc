@@ -11,7 +11,7 @@ public:
 template<typename F, typename... Ts>
 class BinaryTree {
     private:
-        //Y este seria el nodo 
+        //Y este seria el nodo
         BinaryTreeNode<F, Ts...>* root;
 
     public:
