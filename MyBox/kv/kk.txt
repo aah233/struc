@@ -1,0 +1,15 @@
+675,684d674
+< 	friend interval floor(const interval& x) {
+< 		using std::floor;
+< 		return interval(floor(x.inf), floor(x.sup));
+< 	}
+< 
+< 	friend interval ceil(const interval& x) {
+< 		using std::ceil;
+< 		return interval(ceil(x.inf), ceil(x.sup));
+< 	}
+< 
+1053c1043
+< 		T x_i, x_f, tmp;
+---
+> 		T x_i, x_f;
