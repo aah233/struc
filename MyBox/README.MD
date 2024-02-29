@@ -1,1 +1,0 @@
-1. Implementar con el inputouput coger los parametros  y  usar el initBox
