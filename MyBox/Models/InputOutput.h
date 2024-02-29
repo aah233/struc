@@ -1,3 +1,7 @@
+#include <kv/interval.hpp>
+#include <kv/rdouble.hpp> //After interval.hpp. To verified IA.
+#include <kv/interval-vector.hpp>
+
 #ifndef __INPUTOUTPUT__   //Check if the header has been defined
 #define __INPUTOUTPUT__   //If not, define it      //Include the define.h header file
 
