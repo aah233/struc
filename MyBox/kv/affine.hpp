@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2019 Masahide Kashiwagi (kashi@waseda.jp)
+ * Copyright (c) 2013-2021 Masahide Kashiwagi (kashi@waseda.jp)
  */
 
 #ifndef AFFINE_HPP
@@ -92,7 +92,9 @@ template <class T> class affine {
 
 	static int& maxnum() {
 		static int m = 0;
-		//#pragma omp threadprivate(m)
+		#ifdef _OPENMP
+		#pragma omp threadprivate(m)
+		#endif
 		return m;
 	}
 
@@ -188,7 +190,7 @@ template <class T> class affine {
 	}
 
 	T get_coef (int i) const {
-		if (i >= (int) a.size()) return T(0.);
+		if (i >= a.size()) return T(0.);
 		else return a(i);
 	}
 
@@ -757,7 +759,7 @@ template <class T> class affine {
 
 	friend affine operator*(const affine& x, const affine& y) {
 		affine r;
-		int i, xs, ys;
+		int i, j, xs, ys;
 		T err;
 		T tmp_u, tmp_l;
 
