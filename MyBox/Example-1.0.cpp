@@ -11,6 +11,7 @@
 
 #include "Box.hpp"
 #include "./Modules/ParamnsTerminal.cpp"
+
 /*---------------------------------------------------------------------------*/
 int main(int argc, char *argv[])
 {
@@ -20,7 +21,7 @@ int main(int argc, char *argv[])
    //obtener por parámetro el -d que es alfa
    mapArg = ParamnsTerminal(argc, argv);
    alfa = mapArg["-d"];
-
+   
    //Me quedo por aqui haciendo el while, para comparar si el width es menor que alfa
    
    /*
