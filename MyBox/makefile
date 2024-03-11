@@ -1,5 +1,6 @@
 PREFIX=/home/$(shell whoami)
-DEBUG  =  
+#DEBUG  =  
+DEBUG  =  -g
 FLAGS  = -Wall -DNDEBUG -DKV_FASTROUND 
 INC    = -I. -I$(PREFIX)/kv
 RPATH  = -Wl,-R$(PREFIX)/lib

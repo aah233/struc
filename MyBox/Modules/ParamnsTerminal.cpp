@@ -3,11 +3,8 @@
 #include <cstring>
 /***************************************************************************
                 ParamnsTerminal.cpp  -  Template class
-****************************************************************************
+****************************************************************************/
 
-/**
- * Return a map with the parameters of the terminal
-*/
 
 std::map<std::string, double> ParamnsTerminal(int argc, char *argv[])
 {

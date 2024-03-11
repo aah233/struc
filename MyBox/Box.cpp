@@ -118,34 +118,44 @@ void BOX::Divide( BOX &B1,  BOX &B2) {
          itvWinner = itvWinner;
       }
    });*/
-
-   for (size_t i = 0; i < this->X.size() ; i++)
+   
+   for (int i = 0; i < (int)this->X.size() ; i++)
    {
       //¿Es mas eficiente guardarlo en un itv o en un entero y luego acceder a esa posicion?
-      //!!Y si las coordenadas se almacenasen ya guardadas y no hubiera que almacenarlas
       if(width(this->X[i]) == this->Width){
          itvWinner = i;
       }
    }
-
    coordenatesMiddle = mid(this->X[itvWinner]);
-   //Assignate the values of the parent to the children
-   B1.X = this->X;
-   B2.X = this->X;
    //Divide the itvWinner in two coordenates and assignate the values to the children
    B1.X[itvWinner].upper() = coordenatesMiddle;
    B2.X[itvWinner].lower() = coordenatesMiddle;
+
+   B1.Width = WidthItvV(B1.X);
+   B2.Width = WidthItvV(B2.X);
 }
 
 /*---------------------------------------------------------------------------*/
-/* Not necessary because the data in Box is public.                          */
 /*---------------------------------------------------------------------------*/
-/*
-ivector GetFX(BOX & B)
+void BOX::ReplaceBox(const BOX & B)
 {
- return B.FX;
+ int n=B.X.size();
+ 
+ if (n<=0)
+ {
+  cerr << "BOX::BOX (const itvV & IvV), ivV.size<=0" << endl;
+  exit(1);
+ }
+ this->X.resize(n);
+ this->GX.resize(n);
+ this->X=B.X;
+ this->FX=B.FX;
+ this->GX=B.GX;
+ this->M=B.M;
+ BoxCont++;
+ NBox=BoxCont;
+ Width=B.Width;
 }
-*/
 /*----------------------------------------------------------------------------*/
 int Dimension (const BOX & B)
 {

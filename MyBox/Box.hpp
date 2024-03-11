@@ -75,7 +75,7 @@ class BOX
    BOX (const BOX & B);
    ~BOX ();
    void Divide(BOX & BoXG1, BOX & BoXG2);
-
+   void ReplaceBox(const BOX & B);
    /*Assignament opperator overloaded by the compiler, because it was
      overloaded in the ivector class.                                 */
    /*ivector GetFX(BOX & B);                                          */
