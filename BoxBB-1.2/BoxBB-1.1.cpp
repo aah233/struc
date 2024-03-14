@@ -44,6 +44,8 @@ int main(int argc, char *argv[])
 		std::cout << "Box B1 antes de dividir: " << *pBoXG2 << std::endl;
 
 		pB->Divides(*pBoXG1, *pBoXG2); // Divide B en BoXG1 y BoXG2
+		// ME QUEDO POR AQUI HACIENDO LA EVALUACIÓN DE LAS FUNCIONES
+		// fEvalIA(CtD.NFunction, pBPoint->pX, pBPoint->F);
 		std::cout << "Box B1 despues de dividir: " << *pBoXG1 << std::endl;
 		std::cout << "Box B1 despues de dividir: " << *pBoXG2 << std::endl;
 		boxTemporales.push_back(pBoXG1); // No olvides liberar el último B si ya no es necesarioAlmacenar punteros en el vector
