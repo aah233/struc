@@ -49,7 +49,7 @@ Functions:
 // boost headers
 #include <boost/numeric/ublas/vector.hpp>
 #include <boost/numeric/ublas/io.hpp>
-
+#include "defines.h"
 namespace ub = boost::numeric::ublas;
 typedef kv::interval<double> itv; // interval
 typedef ub::vector<itv> itvV;     // interval vector
@@ -75,6 +75,7 @@ public:
   ~BOX();
   void Divides(BOX &BoXG1, BOX &BoXG2);
   void ReplaceBox(const BOX &B);
+  void DrawBox(const BOX pB, ConstData &CtD, bool Fill, PCHARCt color);
   /*Assignament opperator overloaded by the compiler, because it was
     overloaded in the ivector class.                                 */
   /*ivector GetFX(BOX & B);                                          */

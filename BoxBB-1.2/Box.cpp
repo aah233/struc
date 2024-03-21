@@ -8,6 +8,8 @@
 
 #include <iostream>
 #include "Box.hpp"
+#include "utils.h"
+#include "iutils.hpp"
 
 static int BoxCont = 0;
 
@@ -40,8 +42,8 @@ BOX::BOX(int n)
 double WidthItvV(itvV &IvV)
 {
    int n = IvV.size();
-   double LargerWidth;
    double Width = width(IvV[0]);
+   double LargerWidth = Width;
 
    for (int i = 1; i < n; i++)
    {
@@ -132,6 +134,55 @@ void BOX::Divides(BOX &B1, BOX &B2)
 }
 
 /*---------------------------------------------------------------------------*/
+VOID DrawBox(const BOX pB, ConstData &CtD, bool Fill, PCHARCt color)
+{
+   double Pos;
+
+   cout << CtD.NWin << endl;
+   if (Fill)
+      cout << "DrawFillBox" << endl;
+   else
+      cout << "DrawLineBox" << endl;
+
+   Pos = Normalice(pB->X[0].lower(), CtD.XLim(0).lower(), width(CtD.XLim(0)));
+   printf("%f\n", Pos * CtD.WWidth);
+
+   Pos = Normalice(pB->X[1].lower(), CtD.XLim(1).lower(), width(CtD.XLim(1)));
+   // Change pos in [0,1] to [1,0]
+   Pos *= -1.0;
+   Pos += 1.0;
+   printf("%f\n", Pos * CtD.WWidth);
+
+   Pos = Normalice(pB->X[0].upper(), CtD.XLim(0).lower(), width(CtD.XLim(0)));
+   printf("%f\n", Pos * CtD.WWidth);
+
+   Pos = Normalice(pB->X[1].upper(), CtD.XLim(1).lower(), width(CtD.XLim(1)));
+   // Change pos in [0,1] to [1,0]
+   Pos *= -1.0;
+   Pos += 1.0;
+   printf("%f\n", Pos * CtD.WWidth);
+
+   if (Fill)
+      cout << color << endl;
+   else
+   {
+      if (zero_in(pB->GX[0]))
+         cout << "Black" << endl;
+      else if (pB->GX[0].upper() < 0.0) // Negative
+         cout << "Blue" << endl;        // Decreases to right
+      else                              // Positive
+         cout << "Red" << endl;         // Decreases to left
+
+      if (zero_in(pB->GX[1]))
+         cout << "Black" << endl;
+      else if (pB->GX[1].upper() < 0.0) // Negative
+         cout << "Blue" << endl;        // Decreases up
+      else                              // Positive
+         cout << "Red" << endl;         // Decreases down
+   }
+
+   cout << pB->NBox << endl;
+}
 /*---------------------------------------------------------------------------*/
 void BOX::ReplaceBox(const BOX &B)
 {
