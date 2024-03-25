@@ -1,6 +1,6 @@
 PREFIX = /home/$(shell whoami)
-DEBUG  =  
-#DEBUG  =  -g
+#DEBUG  =  
+DEBUG  =  -g
 #FLAGS  = -Wall 
 FLAGS  = -Wall -O3 -DNDEBUG -DKV_FASTROUND 
 INC    = -I. -I$(PREFIX)/kv/ 

@@ -34,6 +34,7 @@ int main(int argc, char *argv[])
 	PrintParams(stderr, CtD, Alpha);   // los imprime para ver que estan bien
 	// Create a new Box with the paramns
 	BOX *pB = new BOX(CtD.InitBox);
+
 	// TODO falta evaluar esta
 	//  while dont have a better aplha
 	//  while (pB != NULL && (&pB->FX.upper() - &pB->FX.lower() > Alpha))
@@ -42,21 +43,19 @@ int main(int argc, char *argv[])
 		// Inicializar 2 divisores de caja
 		BOX *pBoXG1 = new BOX(*pB); // Crear un nuevo BOX como copia de B
 		BOX *pBoXG2 = new BOX(*pB); // Crear otro BOX como copia de B
-		std::cout << "Box B1 antes de dividir: " << *pBoXG1 << std::endl;
-		std::cout << "Box B1 antes de dividir: " << *pBoXG2 << std::endl;
 
 		pB->Divides(*pBoXG1, *pBoXG2); // Divide B en BoXG1 y BoXG2
 		fgEvalIA(CtD.NFunction, pBoXG1->X, pBoXG1->FX, pBoXG1->GX);
 		fgEvalIA(CtD.NFunction, pBoXG2->X, pBoXG2->FX, pBoXG2->GX);
-		// TODO FALTA PINTAR LA CAJA QUE SELECCIONAR
-		// TODO ELIMINO LA CAJA PERDEDORA
-		// TODO evaluar el punto medio sirve con el rangeuptest , que es eliminar la caja en el caso de que en la evaluación F esté por encima de la F del mejor punto
-		// test de monotonia
-		// TODO PASAR LOS TEST
-		//  pinto la que selecciono nada más
-		//   Evaluar cual de las dos es menor Flower
-		std::cout << "Box B1 despues de dividir: " << *pBoXG1 << std::endl;
-		std::cout << "Box B1 despues de dividir: " << *pBoXG2 << std::endl;
+		// no se muestra si no tiene el tcl
+		pB->DrawBox(CtD, true, "#00e000");
+		//  TODO FALTA PINTAR LA CAJA QUE SELECCIONAR
+		//  TODO ELIMINO LA CAJA PERDEDORA
+		//  TODO evaluar el punto medio sirve con el rangeuptest , que es eliminar la caja en el caso de que en la evaluación F esté por encima de la F del mejor punto
+		//  test de monotonia
+		//  TODO PASAR LOS TEST
+		//   pinto la que selecciono nada más
+		//    Evaluar cual de las dos es menor Flower
 		boxTemporales.push_back(pBoXG1); // No olvides liberar el último B si ya no es necesarioAlmacenar punteros en el vector
 		boxTemporales.push_back(pBoXG2);
 		// pintarlas aqui
@@ -68,7 +67,6 @@ int main(int argc, char *argv[])
 		boxTemporales.pop_back(); // Liberar el último B creado
 		i++;
 	}
-	std::cout << "Imprimir i: " << i << std::endl;
 
 	BOX *pBTemp;
 	// Recorrer todos los elementos y borrar su contenido

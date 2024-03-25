@@ -47,6 +47,12 @@ void PrintVR(FILE *FOut, PREAL vr, INT NDim)
       fprintf(FOut, "%14.10g ", vr[i]);
    fprintf(FOut, "\n");
 }
+/*---------------------------------------------------------------------------*/
+// Value in [Lowerbound, Lowerbound+Width] is put in [0,1] interval.
+double Normalice(double Value, double Lowerbound, double Width)
+{
+   return ((Value - Lowerbound) / Width);
+}
 
 /*---------------------------------------------------------------------------*/
 void PrintMR(FILE *FOut, PPREAL ppA, INT Rows, INT Cols)

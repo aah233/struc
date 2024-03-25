@@ -134,7 +134,7 @@ void BOX::Divides(BOX &B1, BOX &B2)
 }
 
 /*---------------------------------------------------------------------------*/
-VOID DrawBox(const BOX pB, ConstData &CtD, bool Fill, PCHARCt color)
+void BOX::DrawBox(ConstData &CtD, bool Fill, PCHARCt color)
 {
    double Pos;
 
@@ -143,20 +143,19 @@ VOID DrawBox(const BOX pB, ConstData &CtD, bool Fill, PCHARCt color)
       cout << "DrawFillBox" << endl;
    else
       cout << "DrawLineBox" << endl;
-
-   Pos = Normalice(pB->X[0].lower(), CtD.XLim(0).lower(), width(CtD.XLim(0)));
+   Pos = Normalice(this->X[0].lower(), CtD.XLim(0).lower(), width(CtD.XLim(0)));
    printf("%f\n", Pos * CtD.WWidth);
 
-   Pos = Normalice(pB->X[1].lower(), CtD.XLim(1).lower(), width(CtD.XLim(1)));
+   Pos = Normalice(this->X[1].lower(), CtD.XLim(1).lower(), width(CtD.XLim(1)));
    // Change pos in [0,1] to [1,0]
    Pos *= -1.0;
    Pos += 1.0;
    printf("%f\n", Pos * CtD.WWidth);
 
-   Pos = Normalice(pB->X[0].upper(), CtD.XLim(0).lower(), width(CtD.XLim(0)));
+   Pos = Normalice(this->X[0].upper(), CtD.XLim(0).lower(), width(CtD.XLim(0)));
    printf("%f\n", Pos * CtD.WWidth);
 
-   Pos = Normalice(pB->X[1].upper(), CtD.XLim(1).lower(), width(CtD.XLim(1)));
+   Pos = Normalice(this->X[1].upper(), CtD.XLim(1).lower(), width(CtD.XLim(1)));
    // Change pos in [0,1] to [1,0]
    Pos *= -1.0;
    Pos += 1.0;
@@ -166,23 +165,24 @@ VOID DrawBox(const BOX pB, ConstData &CtD, bool Fill, PCHARCt color)
       cout << color << endl;
    else
    {
-      if (zero_in(pB->GX[0]))
+      if (zero_in(this->GX[0]))
          cout << "Black" << endl;
-      else if (pB->GX[0].upper() < 0.0) // Negative
-         cout << "Blue" << endl;        // Decreases to right
-      else                              // Positive
-         cout << "Red" << endl;         // Decreases to left
+      else if (this->GX[0].upper() < 0.0) // Negative
+         cout << "Blue" << endl;          // Decreases to right
+      else                                // Positive
+         cout << "Red" << endl;           // Decreases to left
 
-      if (zero_in(pB->GX[1]))
+      if (zero_in(this->GX[1]))
          cout << "Black" << endl;
-      else if (pB->GX[1].upper() < 0.0) // Negative
-         cout << "Blue" << endl;        // Decreases up
-      else                              // Positive
-         cout << "Red" << endl;         // Decreases down
+      else if (this->GX[1].upper() < 0.0) // Negative
+         cout << "Blue" << endl;          // Decreases up
+      else                                // Positive
+         cout << "Red" << endl;           // Decreases down
    }
 
-   cout << pB->NBox << endl;
+   cout << this->NBox << endl;
 }
+
 /*---------------------------------------------------------------------------*/
 void BOX::ReplaceBox(const BOX &B)
 {

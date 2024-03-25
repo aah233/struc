@@ -75,10 +75,7 @@ public:
   ~BOX();
   void Divides(BOX &BoXG1, BOX &BoXG2);
   void ReplaceBox(const BOX &B);
-  void DrawBox(const BOX pB, ConstData &CtD, bool Fill, PCHARCt color);
-  /*Assignament opperator overloaded by the compiler, because it was
-    overloaded in the ivector class.                                 */
-  /*ivector GetFX(BOX & B);                                          */
+  void DrawBox(ConstData &CtD, bool Fill, PCHARCt color);
   friend int Dimension(const BOX &);
   friend ostream &operator<<(ostream &os, const BOX &B);
 };
