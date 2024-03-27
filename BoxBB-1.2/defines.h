@@ -89,6 +89,18 @@ struct ConstData
        REAL Min;       // Min from input file.
 };
 
+//-----------------------------------------------------------------------------
+// iTDAT
+typedef struct typebox BOX;
+typedef BOX *PBOX;
+typedef PBOX *PPBOX;
+
+struct iTDAT // Temporal data to kv
+{
+       PBOX pBIncumb; // For Incombent
+       PBOX pBPoint;  // For centoid, bumman, etc
+       ub::vector<double> rVector;
+};
 //------------------------------------------------------------------------------
 #define MAXVALUE DBL_MAX
 #define MINVALUE DBL_MIN

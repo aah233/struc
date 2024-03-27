@@ -20,26 +20,42 @@ using namespace std;
 /*---------------------------------------------------------------------------*/
 int main(int argc, char *argv[])
 {
-	std::map<double, BOX *> edad;
+
 	int i;
 	double Alpha;  // Termination criterion diam([LB,incumb])<=Alpha.
 	ConstData CtD; // ConstantData. See utils.h
 	std::vector<BOX *> boxTemporales;
 	bool result;
 	int pCounters[NCounters]; // numero de veces que se ha mejorado
+	int PrevNUpInc;			  // this variable save the incumben
+	iTDAT iTDat;
 
 	// std::cout.precision(17);
 	setlocale(LC_NUMERIC, "en_US.UTF-8"); // Use thousands separators
 	cout.imbue(std::locale("en_US.UTF-8"));
 	cerr.imbue(std::locale("en_US.UTF-8"));
 
+	// Init counters
+	for (i = 0; i < NCounters; i++)
+		pCounters[i] = 0;
+
 	// Este
 	GetParams(argc, argv, CtD, Alpha); // Cogemos los paremtro de entrada de la terminal
 	PrintParams(stderr, CtD, Alpha);   // los imprime para ver que estan bien
+
+	int NDim = CtD.NDim; // number of dimensions
+
 	// Create a new Box with the paramns
 	BOX *pB = new BOX(CtD.InitBox);
+	// generate itad, in this pB we gonna save the initial box
+	iTDat.pBPoint = pB;
+	iTDat.pBIncumb = pB;
+	iTDat.pBIncumb->F.upper() = DBL_MAX;
+	iTDat.pBIncumb->F.lower() = DBL_MAX;
+	iTDat.rVector.resize(NDim);
+	// Eval de first Box
 	fgEvalIA(CtD.NFunction, pB->X, pB->FX, pB->GX);
-	//?? Y En el caso de que la rechace que pasa?
+	//?? Y En el caso de que la rechace que pasa siendo la primera, creo que nunca sucederia no?
 
 	//   while (pB != NULL && (&pB->FX.upper() - &pB->FX.lower() > Alpha))
 	while (pB->Width > Alpha)
@@ -57,10 +73,7 @@ int main(int argc, char *argv[])
 		result = TestBox(pBoXG1, CtD, pCounters, pB);
 		// print resultado
 		std::cout << result << std::endl;
-		//    TODO ELIMINO LA CAJA PERDEDORA
-		//    TODO evaluar el punto medio sirve con el rangeuptest , que es eliminar la caja en el caso de que en la evaluación F esté por encima de la F del mejor punto
-		//    test de monotonia
-		//    TODO PASAR LOS TEST
+		//   ELIMINO LA CAJA PERDEDORA
 		//     pinto la que selecciono nada más
 		//      Evaluar cual de las dos es menor Flower
 		boxTemporales.push_back(pBoXG1); // No olvides liberar el último B si ya no es necesarioAlmacenar punteros en el vector

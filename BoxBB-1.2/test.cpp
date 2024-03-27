@@ -66,16 +66,23 @@ VOID CutOffTest(PBTB PBTB, ConstData &CtD, iTDAT &iTDat)
 }
 */
 /*---------------------------------------------------------------------------*/
-bool RangeUpTest(PBOX pB, PBOX pbItad)
+// evaluar el punto medio sirve con el rangeuptest , que es eliminar la caja en el caso de que en la evaluación F esté por encima de la F del mejor punto
+bool RangeUpTest(PBOX pB, iTDAT &iTDat)
 {
-	if (pB->FX.lower() > pbItad->FX.upper())
+	if (pB->FX.lower() > iTDat.pBIncumb->F.upper())
 		return True;
 	return False;
 }
 
 /*---------------------------------------------------------------------------*/
 // If return true we need to delete Box, Draw and delete
-bool TestBox(PBOX pB, ConstData &CtD, PINT pCounters, PBOX pbItad)
+/**
+ * @param  Pb to evalue
+ * @param  CtD Constant data in the app
+ * @param  pCounters Counter of the app
+ * @param  pbItad The best box
+ */
+bool TestBox(PBOX pB, ConstData &CtD, PINT pCounters, iTDAT &iTDat)
 {
 	if (pB == NULL)
 	{
@@ -83,8 +90,10 @@ bool TestBox(PBOX pB, ConstData &CtD, PINT pCounters, PBOX pbItad)
 		exit(1);
 	}
 	// Rangue Up
-	if (RangeUpTest(pB, pbItad))
+	if (RangeUpTest(pB, iTDat))
 	{
+		// pinto y devuelvo
+		DrawBox(pB, CtD, true, "#c08040"); // Draw  Brown
 		return True;
 	}
 
@@ -102,9 +111,10 @@ bool TestBox(PBOX pB, ConstData &CtD, PINT pCounters, PBOX pbItad)
 			return True;
 		}
 		// Box was reduced.
-		EvalBox(pB, CtD, pbItad, pCounters);
-		if (RangeUpTest(pB, pbItad)) //?? Esto hay que volverlo a pasar por que la hemos reducido?
+		fgEvalIA(CtD.NFunction, pB->X, pB->FX, pB->GX);
+		if (RangeUpTest(pB, iTDat))
 		{
+			DrawBox(pB, CtD, true, "#c08040"); // Draw  Brown
 			return True;
 		}
 	}
