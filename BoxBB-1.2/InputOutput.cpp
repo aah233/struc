@@ -16,7 +16,7 @@
 #include "utils.h"
 #include <kv/affine.hpp>
 #include "Functions.hpp"
-#include "box.hpp"
+#include "Box.hpp"
 #include "InputOutput.hpp"
 
 /*----------------------------------------------------------------------------*/

@@ -1,6 +1,6 @@
 PREFIX = /home/$(shell whoami)
-#DEBUG  =  
-DEBUG  =  -g
+DEBUG  =  
+#DEBUG  =  -g
 #FLAGS  = -Wall 
 FLAGS  = -Wall -O3 -DNDEBUG -DKV_FASTROUND 
 INC    = -I. -I$(PREFIX)/kv/ 
@@ -9,39 +9,32 @@ LIB    = -L/usr/lib64 -lm -lc
 CC     = g++
 
 #------------------------------------------------------------------------------
-PROGRAM = BoxBB-1.1
-default : $(PROGRAM)
+#------------------------------------------------------------------------------
+LINK_TARGET = BoxBB-1.1
+OBJS = \
+	argshand.o \
+	getmem.o \
+	utils.o \
+	iutils.o \
+	Functions.o \
+	Box.o \
+	InputOutput.o \
+	test.o
+
+REBUILDABLES = $(OBJS) $(LINK_TARGET)
+
+default : $(LINK_TARGET)
+all     : $(LINK_TARGET)
 
 #------------------------------------------------------------------------------
-$(PROGRAM): $(PROGRAM).cpp makefile defines.h argshand.o getmem.o utils.o \
-	iutils.o Functions.o \
-	InputOutput.o Box.o test.o defines.h
-	$(CC) $(DEBUG) $(FLAGS) $(INC) \
-	argshand.o getmem.o utils.o iutils.o Functions.o \
-	 Box.o InputOutput.o  \
-	$(RPATH) $(LIB) \
-	-o $(PROGRAM) $(PROGRAM).cpp
-  
+$(LINK_TARGET) : %: %.cpp $(OBJS) makefile defines.h
+	$(CC) $(DEBUG) $(FLAGS) $(INC) $(OBJS) $(RPATH) $(LIB) -o $@ $<
 
-InputOutput.o: InputOutput.cpp InputOutput.hpp
-	$(CC) $(DEBUG) $(FLAGS) $(INC) -c -o InputOutput.o  InputOutput.cpp  	
+%.o : %.cpp %.hpp defines.h
+	$(CC) $(DEBUG) $(FLAGS) $(INC) -o $@ -c $<
 
-Box.o: Box.cpp Box.hpp
-	$(CC) $(DEBUG) $(FLAGS) $(INC) -c -o Box.o  Box.cpp
+%.o : %.c %.h defines.h
+	$(CC) $(DEBUG) $(FLAGS) $(INC) -o $@ -c $<
 
-Functions.o: Functions.cpp Functions.hpp
-	$(CC) $(DEBUG) $(FLAGS) $(INC) -c -o Functions.o  Functions.cpp  
-	
-iutils.o : iutils.cpp iutils.hpp 
-	$(CC) $(DEBUG) $(FLAGS) $(INC) -c -o iutils.o iutils.cpp
-		
-utils.o : utils.c utils.h 
-	$(CC) $(DEBUG) $(FLAGS) $(INC) -c -o utils.o utils.c
-
-getmem.o : getmem.c getmem.h 
-	$(CC) $(DEBUG) $(FLAGS) -c -o getmem.o getmem.c
-
-argshand.o : argshand.c argshand.h 
-	$(CC) $(DEBUG) $(FLAGS) -c -o argshand.o argshand.c
 clean:
-	@rm $(PROGRAM) *.o *.~ *.bck 2>/dev/null || true
+	@rm $(REBUILDABLES) *.o *~ *.bck 2>/dev/null || true

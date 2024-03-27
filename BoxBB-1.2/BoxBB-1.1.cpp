@@ -11,6 +11,8 @@
 #include "Functions.hpp"
 #include "InputOutput.hpp"
 #include "Box.hpp"
+#include "test.hpp"
+#include <map>
 #define PRINT 0
 
 using namespace std;
@@ -18,11 +20,13 @@ using namespace std;
 /*---------------------------------------------------------------------------*/
 int main(int argc, char *argv[])
 {
+	std::map<double, BOX *> edad;
 	int i;
 	double Alpha;  // Termination criterion diam([LB,incumb])<=Alpha.
 	ConstData CtD; // ConstantData. See utils.h
 	std::vector<BOX *> boxTemporales;
-	// numero de veces que se ha mejorado
+	bool result;
+	int pCounters[NCounters]; // numero de veces que se ha mejorado
 
 	// std::cout.precision(17);
 	setlocale(LC_NUMERIC, "en_US.UTF-8"); // Use thousands separators
@@ -34,10 +38,10 @@ int main(int argc, char *argv[])
 	PrintParams(stderr, CtD, Alpha);   // los imprime para ver que estan bien
 	// Create a new Box with the paramns
 	BOX *pB = new BOX(CtD.InitBox);
+	fgEvalIA(CtD.NFunction, pB->X, pB->FX, pB->GX);
+	//?? Y En el caso de que la rechace que pasa?
 
-	// TODO falta evaluar esta
-	//  while dont have a better aplha
-	//  while (pB != NULL && (&pB->FX.upper() - &pB->FX.lower() > Alpha))
+	//   while (pB != NULL && (&pB->FX.upper() - &pB->FX.lower() > Alpha))
 	while (pB->Width > Alpha)
 	{
 		// Inicializar 2 divisores de caja
@@ -49,13 +53,16 @@ int main(int argc, char *argv[])
 		fgEvalIA(CtD.NFunction, pBoXG2->X, pBoXG2->FX, pBoXG2->GX);
 		// no se muestra si no tiene el tcl
 		pB->DrawBox(CtD, true, "#00e000");
-		//  TODO FALTA PINTAR LA CAJA QUE SELECCIONAR
-		//  TODO ELIMINO LA CAJA PERDEDORA
-		//  TODO evaluar el punto medio sirve con el rangeuptest , que es eliminar la caja en el caso de que en la evaluación F esté por encima de la F del mejor punto
-		//  test de monotonia
-		//  TODO PASAR LOS TEST
-		//   pinto la que selecciono nada más
-		//    Evaluar cual de las dos es menor Flower
+		// There we gonna pass the test, the test return a PBOX to, we gonna pass now, because the have been evaluated
+		result = TestBox(pBoXG1, CtD, pCounters, pB);
+		// print resultado
+		std::cout << result << std::endl;
+		//    TODO ELIMINO LA CAJA PERDEDORA
+		//    TODO evaluar el punto medio sirve con el rangeuptest , que es eliminar la caja en el caso de que en la evaluación F esté por encima de la F del mejor punto
+		//    test de monotonia
+		//    TODO PASAR LOS TEST
+		//     pinto la que selecciono nada más
+		//      Evaluar cual de las dos es menor Flower
 		boxTemporales.push_back(pBoXG1); // No olvides liberar el último B si ya no es necesarioAlmacenar punteros en el vector
 		boxTemporales.push_back(pBoXG2);
 		// pintarlas aqui
