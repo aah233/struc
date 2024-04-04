@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
 		fgEvalIA(CtD.NFunction, pBoXG1->X, pBoXG1->FX, pBoXG1->GX);
 		fgEvalIA(CtD.NFunction, pBoXG2->X, pBoXG2->FX, pBoXG2->GX);
 		// no se muestra si no tiene el tcl
-		pB->DrawBox(CtD, true, "#00e000");
+		pB->DrawBox(CtD, true, "#00e000"); // Verde es que es monotona
 		// There we gonna pass the test, the test return a PBOX to, we gonna pass now, because the have been evaluated
 		result = TestBox(pBoXG1, CtD, pCounters, pB);
 		// print resultado
