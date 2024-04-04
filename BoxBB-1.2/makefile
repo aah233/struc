@@ -17,7 +17,9 @@ OBJS = \
 	utils.o \
 	iutils.o \
 	Functions.o \
-	Box.o \
+	box.o \
+	listbox.o \
+	btbox.o \
 	InputOutput.o \
 	test.o
 

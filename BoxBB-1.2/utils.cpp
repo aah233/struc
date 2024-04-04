@@ -44,14 +44,8 @@ ULINT CountSetBits(ULINT n)
 void PrintVR(FILE *FOut, PREAL vr, INT NDim)
 {
    for (int i = 0; i < NDim; i++)
-      fprintf(FOut, "%14.10g ", vr[i]);
+      fprintf(FOut, "%g ", vr[i]);
    fprintf(FOut, "\n");
-}
-/*---------------------------------------------------------------------------*/
-// Value in [Lowerbound, Lowerbound+Width] is put in [0,1] interval.
-double Normalice(double Value, double Lowerbound, double Width)
-{
-   return ((Value - Lowerbound) / Width);
 }
 
 /*---------------------------------------------------------------------------*/
@@ -72,25 +66,25 @@ void PrintVINT(FILE *FOut, PINT vr, INT NDim)
 }
 
 /*---------------------------------------------------------------------------*/
-void PrintVBOOL(FILE *FOut, PBOOL pB, INT NDim)
-{
-   int i;
-   fprintf(FOut, "[");
-   for (i = 0; i < NDim; i++)
-   {
-      if (pB[i] == True)
-         fprintf(FOut, "T");
-      if (pB[i] == False)
-         fprintf(FOut, "F");
-      if (pB[i] == NegGrad)
-         fprintf(FOut, "N");
-      if (pB[i] == PosGrad)
-         fprintf(FOut, "P");
-      if (pB[i] == ZeroInGrad)
-         fprintf(FOut, "Z");
-   }
-   fprintf(FOut, "]\n");
-}
+/*void PrintVBOOL (FILE * FOut, PBOOL pB, INT NDim)*/
+/*{*/
+/* int i;*/
+/* fprintf(FOut,"[");*/
+/* for (i=0;i<NDim;i++)*/
+/*     {*/
+/*      if (pB[i]==True)*/
+/*         fprintf(FOut,"T");*/
+/*      if (pB[i]==False)*/
+/*         fprintf(FOut,"F");  */
+/*      if (pB[i]==NegGrad)*/
+/*         fprintf(FOut,"N"); */
+/*      if (pB[i]==PosGrad)*/
+/*         fprintf(FOut,"P");    */
+/*      if (pB[i]==ZeroInGrad)*/
+/*         fprintf(FOut,"Z");      */
+/*     }    */
+/* fprintf(FOut,"]\n");    */
+/*}*/
 
 /*---------------------------------------------------------------------------*/
 void CopyVR(PREAL PD, PREAL PO, INT NDim)
@@ -171,42 +165,31 @@ VOID DrawWait(const int NWin)
    printf("%d\n", NWin);
    printf("Wait\n");
 }
+/*---------------------------------------------------------------------------*/
+// Value in [Lowerbound, Lowerbound+Width] is put in [0,1] interval.
+double Normalice(double Value, double Lowerbound, double Width)
+{
+   return ((Value - Lowerbound) / Width);
+}
 
 /*---------------------------------------------------------------------------*/
 REAL XInWindow(PREAL pX, const itvV &XLim, const INT WWidth)
 {
-   double x, y;
-   x = XLim(0).lower();
-   y = width(XLim(0));
-
-   // cerr << "XInWindow.x=" << x << endl;
-   // cerr << "XInWindow.y=" << y << endl;
-   // PrintVR(stderr,pX,2);
-
-   // ResX =( pX[0] - (REAL)x )  / (REAL)y  * (REAL)(WWidth-1);
-   // cerr << "ResX=" << ResX << endl;
-   return (pX[0] - (REAL)x) / (REAL)y * (REAL)(WWidth - 1);
+   double Pos;
+   Pos = Normalice(pX[0], XLim(0).lower(), width(XLim(0)));
+   // Enlarge to canvas x's width
+   return Pos * WWidth;
 }
-
-/*---------------------------------------------------------------------------*/
+//---------------------------------------------------------------------------
 REAL YInWindow(PREAL pX, const itvV &XLim, const INT WWidth)
 {
-   double x, y;
-   // REAL ResY;
-
-   x = XLim(1).lower();
-   y = width(XLim(1));
-
-   // cerr << "YInWindow.x=" << x << endl;
-   // cerr << "YInWindow.y=" << y << endl;
-   // PrintVR(stderr,pX,2);
-
-   // ResY= ( ( pX[1]-(REAL)x ) / (REAL)y * (REAL)(-1.0) + (REAL)1.0 ) *
-   //       (REAL)(WWidth-1);
-
-   // cerr << "ResY=" << ResY << endl;
-   return ((pX[1] - (REAL)x) / (REAL)y * (REAL)(-1.0) + (REAL)1.0) *
-          (REAL)(WWidth - 1);
+   double Pos;
+   Pos = Normalice(pX[1], XLim(1).lower(), width(XLim(1)));
+   // Change pos in [0,1] to [1,0]
+   Pos *= -1.0;
+   Pos += 1.0;
+   // Enlarge to canvas y's width
+   return Pos * WWidth;
 }
 
 /*---------------------------------------------------------------------------*/
@@ -230,7 +213,7 @@ VOID DrawColorPoint(const BOOL Draw, const INT NWin, const INT NPoint,
                     PCHARCt color)
 {
    printf("%d\n", NWin);
-   printf("ColorPoint\n");
+   printf("SetColorPoint\n");
    printf("%d\n", NPoint);
    printf("%s\n", color);
    // if (Draw>1)
@@ -246,55 +229,6 @@ VOID DelPoint(const INT NWin, const INT NPoint)
 }
 
 /*---------------------------------------------------------------------------*/
-VOID DrawArrow(const INT NWin, PREAL pR1, PREAL pR2,
-               const int NArrow, const itvV &XLim,
-               const INT WWidth, PCHARCt Color)
-{
-   printf("%d\n", NWin);
-   printf("DrawArrow\n");
-   printf("%f\n", XInWindow(pR1, XLim, WWidth));
-   printf("%f\n", YInWindow(pR1, XLim, WWidth));
-   printf("%f\n", XInWindow(pR2, XLim, WWidth));
-   printf("%f\n", YInWindow(pR2, XLim, WWidth));
-   printf("%s\n", Color);
-   printf("%d\n", NArrow);
-   fflush(stdout);
-}
-
-/*---------------------------------------------------------------------------*/
-VOID DelArrow(INT NWin, int NArrow)
-{
-   printf("%d\n", NWin);
-   printf("DelArrow\n");
-   printf("%d\n", NArrow);
-   fflush(stdout);
-}
-
-/*---------------------------------------------------------------------------*/
-VOID DrawCircle(PREAL pX, int NCircle, ConstData CtD, PCHARCt color)
-{
-   printf("%d\n", CtD.NWin);
-   printf("DrawCircle\n");
-
-   printf("%f\n", XInWindow(pX, CtD.XLim, CtD.WWidth));
-   printf("%f\n", YInWindow(pX, CtD.XLim, CtD.WWidth));
-
-   printf("%s\n", color);
-
-   printf("%d\n", NCircle);
-
-   fflush(stdout);
-}
-
-/*---------------------------------------------------------------------------*/
-VOID DelCircle(const INT NWin, const INT NCircle)
-{
-   printf("%d\n", NWin);
-   printf("DelCircle\n");
-   printf("%d\n", NCircle);
-}
-
-/*---------------------------------------------------------------------------*/
 VOID DrawPolygon(PPREAL ppPoints, int NPoints, int NDim, int NPoly,
                  ConstData CtD, PCHARCt color)
 {
@@ -304,7 +238,7 @@ VOID DrawPolygon(PPREAL ppPoints, int NPoints, int NDim, int NPoly,
       exit(1);
    }
    printf("%d\n", CtD.NWin);
-   printf("DrawPolygon\n");
+   printf("DrawLinePoly\n");
    printf("%d\n", NPoints);
    for (int i = 0; i < NPoints; i++)
    {
@@ -427,60 +361,57 @@ REAL DistPoints(PREAL p1, PREAL p2, INT NDim)
 }
 
 /*---------------------------------------------------------------------------*/
-BOOL EQ(REAL a, REAL b)
+bool EQ(REAL a, REAL b)
 {
    if (a <= b && b - a < REALPrec)
-      return True;
+      return true;
 
    if (a >= b && a - b < REALPrec)
-      return True;
+      return true;
 
-   /* if (a == b)
-       return True;
-   */
-   return False;
+   return false;
 }
 
 /*---------------------------------------------------------------------------*/
-BOOL LT(REAL a, REAL b)
+bool LT(REAL a, REAL b)
 {
    if (EQ(a, b))
       return False;
 
    if (a < b)
-      return True;
+      return true;
 
-   return False;
+   return false;
 }
 
 /*---------------------------------------------------------------------------*/
-BOOL GT(REAL a, REAL b)
+bool GT(REAL a, REAL b)
 {
    if (EQ(a, b))
-      return False;
+      return false;
 
    if (a > b)
-      return True;
+      return true;
 
    return False;
 }
 
 /*---------------------------------------------------------------------------*/
-BOOL LE(REAL a, REAL b)
+bool LE(REAL a, REAL b)
 {
    if (EQ(a, b) || a < b)
-      return True;
+      return true;
 
-   return False;
+   return false;
 }
 
 /*---------------------------------------------------------------------------*/
-BOOL GE(REAL a, REAL b)
+bool GE(REAL a, REAL b)
 {
    if (EQ(a, b) || a > b)
-      return True;
+      return true;
 
-   return False;
+   return false;
 }
 
 /*---------------------------------------------------------------------------*/
