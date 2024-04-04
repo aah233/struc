@@ -50,8 +50,8 @@ int main(int argc, char *argv[])
 	// generate itad, in this pB we gonna save the initial box
 	iTDat.pBPoint = pB;
 	iTDat.pBIncumb = pB;
-	iTDat.pBIncumb->F.upper() = DBL_MAX;
-	iTDat.pBIncumb->F.lower() = DBL_MAX;
+	iTDat.pBIncumb->FX.upper() = DBL_MAX;
+	iTDat.pBIncumb->FX.lower() = DBL_MAX;
 	iTDat.rVector.resize(NDim);
 	// Eval de first Box
 	fgEvalIA(CtD.NFunction, pB->X, pB->FX, pB->GX);
@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
 		// no se muestra si no tiene el tcl
 		pB->DrawBox(CtD, true, "#00e000"); // Verde es que es monotona
 		// There we gonna pass the test, the test return a PBOX to, we gonna pass now, because the have been evaluated
-		result = TestBox(pBoXG1, CtD, pCounters, pB);
+		// result = TestBox(pBoXG1, CtD, pCounters, pB);
 		// print resultado
 		std::cout << result << std::endl;
 		//   ELIMINO LA CAJA PERDEDORA

@@ -19,7 +19,7 @@
 // boost headers
 #include <boost/numeric/ublas/vector.hpp>
 #include <boost/numeric/ublas/io.hpp>
-
+#include "Box.hpp"
 namespace ub = boost::numeric::ublas;
 typedef kv::interval<double> itv; // interval
 typedef ub::vector<itv> itvV;     // interval vector
@@ -91,7 +91,7 @@ struct ConstData
 
 //-----------------------------------------------------------------------------
 // iTDAT
-typedef struct typebox BOX;
+// typedef struct typebox BOX;
 typedef BOX *PBOX;
 typedef PBOX *PPBOX;
 
