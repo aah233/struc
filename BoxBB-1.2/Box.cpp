@@ -7,9 +7,10 @@
  ***************************************************************************/
 
 #include <iostream>
-#include "Box.hpp"
+#include "defines.h"
 #include "utils.h"
 #include "iutils.hpp"
+#include "Box.hpp"
 
 static int BoxCont = 0;
 
@@ -20,6 +21,7 @@ BOX::BOX()
    BoxCont++;
    NBox = BoxCont;
    Width = 0;
+   IsMon = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -36,6 +38,7 @@ BOX::BOX(int n)
    BoxCont++;
    NBox = BoxCont;
    Width = 0;
+   IsMon = false;
 }
 
 /*---------------------------------------------------------------------------*/
@@ -73,6 +76,7 @@ BOX::BOX(const itvV &IvV)
    BoxCont++;
    NBox = BoxCont;
    Width = WidthItvV(X);
+   IsMon = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -94,6 +98,7 @@ BOX::BOX(const BOX &B)
    BoxCont++;
    NBox = BoxCont;
    Width = B.Width;
+   IsMon = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -102,7 +107,47 @@ BOX::~BOX()
    X.resize(0);
    GX.resize(0);
 }
+/*----------------------------------------------------------------------------*/
+BOX::SizeBox(const INT NDim)
+{
+   double Width;
+   double Size = width(pB->pX[0]);
 
+   for (int i = 1; i < NDim; i++)
+   {
+      Width = width(pB->pX[i]);
+      if (Width > Size)
+         Size = Width;
+   }
+   // pB->Size = Size;
+   X.resize(Size);
+   GX.resize(Size);
+   return;
+}
+/*----------------------------------------------------------------------------*/
+bool BOX::ReduceBox(ConstData &CtD)
+{
+   int NDim = CtD.NDim;
+   bool Reduce = false;
+
+   for (int i = 0; i < NDim; i++)
+      if (!zero_in(this->GX[i]))
+      {
+         if (this->GX[i].upper() < 0.0 && this->pX[i].upper() == CtD.InititvV[i].upper()) // negative -> to right
+         {
+            this->pX[i].lower() = this->pX[i].upper();
+            Reduce = true;
+         }
+         if (this->GX[i].lower() > 0.0 && this->pX[i].lower() == CtD.InititvV[i].lower()) // positive -> to left
+         {
+            this->pX[i].upper() = this->pX[i].lower();
+            Reduce = true;
+         }
+      }
+   if (Reduce)
+      SizeBox(pB, CtD.NDim);
+   return Reduce;
+}
 /*----------------------------------------------------------------------------*/
 void BOX::Divides(BOX &B1, BOX &B2)
 {

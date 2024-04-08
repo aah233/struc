@@ -41,15 +41,6 @@ Functions:
 #ifndef __BOX__
 #define __BOX__
 
-// kv headers http://verifiedby.me/kv/index-e.html
-#include <kv/interval.hpp>
-#include <kv/rdouble.hpp> //After interval.hpp. To verified IA.
-#include <kv/interval-vector.hpp>
-
-// boost headers
-#include <boost/numeric/ublas/vector.hpp>
-#include <boost/numeric/ublas/io.hpp>
-#include "defines.h"
 namespace ub = boost::numeric::ublas;
 typedef kv::interval<double> itv; // interval
 typedef ub::vector<itv> itvV;     // interval vector
@@ -66,6 +57,7 @@ public:
   bool M;
   int NBox;
   double Width; // width of the larger itv in itvV.
+  bool IsMon;
 
 public:
   BOX();
@@ -74,6 +66,8 @@ public:
   BOX(const BOX &B);
   ~BOX();
   void Divides(BOX &BoXG1, BOX &BoXG2);
+  bool ReduceBox(ConstData &CtD);
+  void SizeBox(const INT NDim);
   void ReplaceBox(const BOX &B);
   void DrawBox(ConstData &CtD, bool Fill, PCHARCt color);
   friend int Dimension(const BOX &);

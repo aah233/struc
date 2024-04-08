@@ -8,9 +8,11 @@
 #include "defines.h"
 #include "argshand.h"
 #include "utils.h"
+#include "iutils.h"
 #include "Functions.hpp"
-#include "InputOutput.hpp"
 #include "Box.hpp"
+#include "itdat.h"
+#include "InputOutput.hpp"
 #include "test.hpp"
 #include <map>
 #define PRINT 0
@@ -25,7 +27,7 @@ int main(int argc, char *argv[])
 	double Alpha;  // Termination criterion diam([LB,incumb])<=Alpha.
 	ConstData CtD; // ConstantData. See utils.h
 	std::vector<BOX *> boxTemporales;
-	bool result;
+	bool result1, result2;	  // resulto of eval box 1 and 2
 	int pCounters[NCounters]; // numero de veces que se ha mejorado
 	int PrevNUpInc;			  // this variable save the incumben
 	iTDAT iTDat;
@@ -67,10 +69,13 @@ int main(int argc, char *argv[])
 		pB->Divides(*pBoXG1, *pBoXG2); // Divide B en BoXG1 y BoXG2
 		fgEvalIA(CtD.NFunction, pBoXG1->X, pBoXG1->FX, pBoXG1->GX);
 		fgEvalIA(CtD.NFunction, pBoXG2->X, pBoXG2->FX, pBoXG2->GX);
-		// no se muestra si no tiene el tcl
-		pB->DrawBox(CtD, true, "#00e000"); // Verde es que es monotona
-		// There we gonna pass the test, the test return a PBOX to, we gonna pass now, because the have been evaluated
-		// result = TestBox(pBoXG1, CtD, pCounters, pB);
+
+		// Eval Monotonous in the two Boxes
+		pBoXG1->IsMon = Monotonous(pBoXG1->GX, NDim); // TODO  es correcto ese NDim??
+		pBoXG2->IsMon = Monotonous(pBoXG2->GX, NDim); // TODO  es correcto ese NDim??
+
+		// TestBox
+		result = TestBox(pBoXG1, CtD, pCounters, pB);
 		// print resultado
 		std::cout << result << std::endl;
 		//   ELIMINO LA CAJA PERDEDORA

@@ -12,6 +12,7 @@
 #include "iutils.hpp"
 #include "Functions.hpp"
 #include "Box.hpp"
+#include "itdat.h"
 #include "listbox.h"
 #include "test.hpp"
 
@@ -69,7 +70,7 @@ VOID CutOffTest(PBTB PBTB, ConstData &CtD, iTDAT &iTDat)
 // evaluar el punto medio sirve con el rangeuptest , que es eliminar la caja en el caso de que en la evaluación F esté por encima de la F del mejor punto
 bool RangeUpTest(PBOX pB, iTDAT &iTDat)
 {
-	if (pB->FX.lower() > iTDat.pBIncumb->F.upper())
+	if (pB->FX.lower() > iTDat.pBIncumb->FX.upper())
 		return True;
 	return False;
 }
@@ -93,7 +94,7 @@ bool TestBox(PBOX pB, ConstData &CtD, PINT pCounters, iTDAT &iTDat)
 	if (RangeUpTest(pB, iTDat))
 	{
 		// pinto y devuelvo
-		DrawBox(pB, CtD, true, "#c08040"); // Draw  Brown
+		pB->DrawBox(CtD, true, "#c08040"); // Draw  Brown
 		return True;
 	}
 
@@ -102,19 +103,17 @@ bool TestBox(PBOX pB, ConstData &CtD, PINT pCounters, iTDAT &iTDat)
 	{
 		if (CtD.Draw)
 		{
-			DelBox(CtD.NWin, pB->NBox);
-			DrawBox(pB, CtD, true, "#00e000"); // Monotonous and interior
-			pB->NBox = GetNewNBox();		   // To not delete the reduced area at reduce
+			pB->DrawBox(CtD, true, "#00e000"); // Monotonous and interior
 		}
 		if (!ReduceBox(pB, CtD))
 		{
 			return True;
 		}
-		// Box was reduced.
+		// Box was reduced, and for this need a new eval
 		fgEvalIA(CtD.NFunction, pB->X, pB->FX, pB->GX);
 		if (RangeUpTest(pB, iTDat))
 		{
-			DrawBox(pB, CtD, true, "#c08040"); // Draw  Brown
+			pB->DrawBox(CtD, true, "#c08040"); // Draw  Brown
 			return True;
 		}
 	}

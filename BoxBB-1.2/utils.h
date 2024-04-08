@@ -63,11 +63,11 @@ PPINT CombNoRep(INT n, INT k, PINT pNComb);
 INT CombN2ToIndex(INT N, INT x, INT y);
 VOID IndexToCombN2(INT N, INT Index, PINT px, PINT py);
 REAL DistPoints(PREAL p1, PREAL p2, INT NDim);
-BOOL EQ(REAL a, REAL b);
-BOOL LT(REAL a, REAL b);
-BOOL GT(REAL a, REAL b);
-BOOL LE(REAL a, REAL b);
-BOOL GE(REAL a, REAL b);
+bool EQ(REAL a, REAL b);
+bool LT(REAL a, REAL b);
+bool GT(REAL a, REAL b);
+bool LE(REAL a, REAL b);
+bool GE(REAL a, REAL b);
 void MiddlePoint(PREAL pA, PREAL pB, PREAL pMiddle, INT NDim);
 void SwapR(REAL &A, REAL &B);
 

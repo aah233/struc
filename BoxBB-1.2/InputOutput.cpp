@@ -17,6 +17,7 @@
 #include <kv/affine.hpp>
 #include "Functions.hpp"
 #include "Box.hpp"
+#include "itdat.h"
 #include "InputOutput.hpp"
 
 /*----------------------------------------------------------------------------*/

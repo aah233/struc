@@ -3,7 +3,7 @@ DEBUG  =
 #DEBUG  =  -g
 #FLAGS  = -Wall 
 FLAGS  = -Wall -O3 -DNDEBUG -DKV_FASTROUND 
-INC    = -I. -I$(PREFIX)/kv/ 
+INC    = -I. -I$(PREFIX)/kv/
 RPATH  = -Wl,-R$(PREFIX)/pnl/lib
 LIB    = -L/usr/lib64 -lm -lc
 CC     = g++
@@ -17,9 +17,7 @@ OBJS = \
 	utils.o \
 	iutils.o \
 	Functions.o \
-	box.o \
-	listbox.o \
-	btbox.o \
+	Box.o \
 	InputOutput.o \
 	test.o
 

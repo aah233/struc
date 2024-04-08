@@ -1047,5 +1047,10 @@ a BOX is created and destroyed every time it is called. A better solution is to 
 * 1.0.4 To create the test.cpp to 
   + Improve the lower bound SetInf(F)=
   + check if the simplex have to be divided or eliminated
+
+
+
+make 2>kk.txt
+grep EQ *
   
 

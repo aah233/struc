@@ -19,7 +19,6 @@
 // boost headers
 #include <boost/numeric/ublas/vector.hpp>
 #include <boost/numeric/ublas/io.hpp>
-
 namespace ub = boost::numeric::ublas;
 typedef kv::interval<double> itv; // interval
 typedef ub::vector<itv> itvV;     // interval vector
@@ -82,13 +81,14 @@ struct ConstData
        int NFunction;  // Function to evaluate
        int NWin = 0;   // Number of the window to draw. Now just the 0.
        int WWidth = 0; // Graphical width and height
-       itvV InititvV;  // When search region is a box
+       itvV InitBox;   // When search region is a box
        itvV XLim;      // interval graphical output. Box Search limits.
        BOOL Draw;      // Draw type
        BOOL IncType;   // Inclusion type. See defines below.
        REAL Min;       // Min from input file.
 };
 
+//-----------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 #define MAXVALUE DBL_MAX
 #define MINVALUE DBL_MIN
@@ -136,5 +136,5 @@ const char CounterDesc[][40] = // Counters description. 40 Max string lenght
 #define IncTypeAA 3     // Affine Arithmetic.
 
 #endif /*__DEFINES__*/
-       /*---------------------------------------------------------------------------*/
-       /*---------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------*/
