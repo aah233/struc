@@ -131,19 +131,19 @@ bool BOX::ReduceBox(ConstData &CtD)
    for (int i = 0; i < NDim; i++)
       if (!zero_in(this->GX[i]))
       {
-         if (this->GX[i].upper() < 0.0 && this->X[i].upper() == CtD.InititvV[i].upper()) // negative -> to right
+         if (this->GX[i].upper() < 0.0 && this->X[i].upper() == CtD.InitBox[i].upper()) // negative -> to right
          {
             this->X[i].lower() = this->X[i].upper();
             Reduce = true;
          }
-         if (this->GX[i].lower() > 0.0 && this->X[i].lower() == CtD.InititvV[i].lower()) // positive -> to left
+         if (this->GX[i].lower() > 0.0 && this->X[i].lower() == CtD.InitBox[i].lower()) // positive -> to left
          {
             this->X[i].upper() = this->X[i].lower();
             Reduce = true;
          }
       }
    if (Reduce)
-      this.SetWidthBox(CtD.NDim);
+      this->SetWidthBox(CtD.NDim);
    return Reduce;
 }
 /*----------------------------------------------------------------------------*/

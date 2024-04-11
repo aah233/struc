@@ -8,7 +8,7 @@
 #include "defines.h"
 #include "argshand.h"
 #include "utils.h"
-#include "iutils.h"
+#include "iutils.hpp"
 #include "Functions.hpp"
 #include "Box.hpp"
 #include "itdat.h"
@@ -27,10 +27,12 @@ int main(int argc, char *argv[])
 	double Alpha;  // Termination criterion diam([LB,incumb])<=Alpha.
 	ConstData CtD; // ConstantData. See utils.h
 	std::vector<BOX *> boxTemporales;
-	bool result1, result2;	  // resulto of eval box 1 and 2
 	int pCounters[NCounters]; // numero de veces que se ha mejorado
 	int PrevNUpInc;			  // this variable save the incumben
 	iTDAT iTDat;
+
+	int result1; // test of one box
+	int result2; // test of the second box
 
 	// std::cout.precision(17);
 	setlocale(LC_NUMERIC, "en_US.UTF-8"); // Use thousands separators
@@ -54,6 +56,7 @@ int main(int argc, char *argv[])
 	iTDat.pBIncumb = pB;
 	iTDat.pBIncumb->FX.upper() = DBL_MAX;
 	iTDat.pBIncumb->FX.lower() = DBL_MAX;
+
 	iTDat.rVector.resize(NDim);
 	// Eval de first Box
 	fgEvalIA(CtD.NFunction, pB->X, pB->FX, pB->GX);
@@ -71,13 +74,13 @@ int main(int argc, char *argv[])
 		fgEvalIA(CtD.NFunction, pBoXG2->X, pBoXG2->FX, pBoXG2->GX);
 
 		// Eval Monotonous in the two Boxes
-		pBoXG1->IsMon = Monotonous(pBoXG1->GX, NDim); // TODO  es correcto ese NDim??
-		pBoXG2->IsMon = Monotonous(pBoXG2->GX, NDim); // TODO  es correcto ese NDim??
+		pBoXG1->IsMon = Monotonous(pBoXG1->GX, NDim);
+		pBoXG2->IsMon = Monotonous(pBoXG2->GX, NDim);
 
 		// TestBox
-		result = TestBox(pBoXG1, CtD, pCounters, pB);
+		result1 = TestBox(pBoXG1, CtD, pCounters, pB);
 		// print resultado
-		std::cout << result << std::endl;
+		std::cout << result1 << std::endl;
 		//   ELIMINO LA CAJA PERDEDORA
 		//     pinto la que selecciono nada más
 		//      Evaluar cual de las dos es menor Flower
