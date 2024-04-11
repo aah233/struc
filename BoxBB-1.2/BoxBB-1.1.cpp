@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
 	//?? Y En el caso de que la rechace que pasa siendo la primera, creo que nunca sucederia no?
 
 	//   while (pB != NULL && (&pB->FX.upper() - &pB->FX.lower() > Alpha))
-	while (pB->Width > Alpha)
+	while (pB != NULL && pB->Width > Alpha)
 	{
 		// Inicializar 2 divisores de caja
 		BOX *pBoXG1 = new BOX(*pB); // Crear un nuevo BOX como copia de B

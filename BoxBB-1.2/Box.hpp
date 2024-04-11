@@ -65,9 +65,9 @@ public:
   BOX(const itvV &IV);
   BOX(const BOX &B);
   ~BOX();
+  void SetWidthBox(const INT NDim);
   void Divides(BOX &BoXG1, BOX &BoXG2);
   bool ReduceBox(ConstData &CtD);
-  void SizeBox(const INT NDim);
   void ReplaceBox(const BOX &B);
   void DrawBox(ConstData &CtD, bool Fill, PCHARCt color);
   friend int Dimension(const BOX &);

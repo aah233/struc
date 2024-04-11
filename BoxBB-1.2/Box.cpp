@@ -108,20 +108,18 @@ BOX::~BOX()
    GX.resize(0);
 }
 /*----------------------------------------------------------------------------*/
-BOX::SizeBox(const INT NDim)
+void BOX::SetWidthBox(const INT NDim)
 {
    double Width;
-   double Size = width(pB->pX[0]);
+   double SizeBox = width(this->X[0]);
 
    for (int i = 1; i < NDim; i++)
    {
-      Width = width(pB->pX[i]);
-      if (Width > Size)
-         Size = Width;
+      Width = width(this->X[i]);
+      if (Width > SizeBox)
+         SizeBox = Width;
    }
-   // pB->Size = Size;
-   X.resize(Size);
-   GX.resize(Size);
+   this->Width = SizeBox;
    return;
 }
 /*----------------------------------------------------------------------------*/
@@ -133,19 +131,19 @@ bool BOX::ReduceBox(ConstData &CtD)
    for (int i = 0; i < NDim; i++)
       if (!zero_in(this->GX[i]))
       {
-         if (this->GX[i].upper() < 0.0 && this->pX[i].upper() == CtD.InititvV[i].upper()) // negative -> to right
+         if (this->GX[i].upper() < 0.0 && this->X[i].upper() == CtD.InititvV[i].upper()) // negative -> to right
          {
-            this->pX[i].lower() = this->pX[i].upper();
+            this->X[i].lower() = this->X[i].upper();
             Reduce = true;
          }
-         if (this->GX[i].lower() > 0.0 && this->pX[i].lower() == CtD.InititvV[i].lower()) // positive -> to left
+         if (this->GX[i].lower() > 0.0 && this->X[i].lower() == CtD.InititvV[i].lower()) // positive -> to left
          {
-            this->pX[i].upper() = this->pX[i].lower();
+            this->X[i].upper() = this->X[i].lower();
             Reduce = true;
          }
       }
    if (Reduce)
-      SizeBox(pB, CtD.NDim);
+      this.SetWidthBox(CtD.NDim);
    return Reduce;
 }
 /*----------------------------------------------------------------------------*/

@@ -105,7 +105,7 @@ bool TestBox(PBOX pB, ConstData &CtD, PINT pCounters, iTDAT &iTDat)
 		{
 			pB->DrawBox(CtD, true, "#00e000"); // Monotonous and interior
 		}
-		if (!ReduceBox(pB, CtD))
+		if (!pB->ReduceBox(CtD))
 		{
 			return True;
 		}
