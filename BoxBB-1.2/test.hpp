@@ -12,9 +12,9 @@
 #define __TEST__
 
 /*---------------------------------------------------------------------------*/
-BOOL RangeUpTest(PBOX pB, PBOX pbItad);
+bool RangeUpTest(PBOX pB, iTDAT &iTDat);
 // VOID CutOffTest		(PBTB pbtb, ConstData & CtD,iTDAT & iTDat);
-BOOL TestBox(PBOX pB, ConstData &CtD, PINT pCounters, PBOX pbItad);
+bool TestBox(PBOX pB, ConstData &CtD, PINT pCounters, iTDAT &iTDat);
 
 #endif /*__TEST__*/
 /*---------------------------------------------------------------------------*/

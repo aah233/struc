@@ -30,9 +30,7 @@ int main(int argc, char *argv[])
 	int pCounters[NCounters]; // numero de veces que se ha mejorado
 	int PrevNUpInc;			  // this variable save the incumben
 	iTDAT iTDat;
-
-	int result1; // test of one box
-	int result2; // test of the second box
+	bool result1, result2;
 
 	// std::cout.precision(17);
 	setlocale(LC_NUMERIC, "en_US.UTF-8"); // Use thousands separators
@@ -78,14 +76,15 @@ int main(int argc, char *argv[])
 		pBoXG2->IsMon = Monotonous(pBoXG2->GX, NDim);
 
 		// TestBox
-		result1 = TestBox(pBoXG1, CtD, pCounters, pB);
+		result1 = TestBox(pBoXG1, CtD, pCounters, iTDat);
+		result2 = TestBox(pBoXG2, CtD, pCounters, iTDat);
+
 		// print resultado
 		std::cout << result1 << std::endl;
-		//   ELIMINO LA CAJA PERDEDORA
-		//     pinto la que selecciono nada más
-		//      Evaluar cual de las dos es menor Flower
+
 		boxTemporales.push_back(pBoXG1); // No olvides liberar el último B si ya no es necesarioAlmacenar punteros en el vector
 		boxTemporales.push_back(pBoXG2);
+
 		// pintarlas aqui
 		pBoXG1 = nullptr;
 		pBoXG2 = nullptr;
