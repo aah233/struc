@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <math.h>
+#include <cstdlib>
 #include "defines.h"
 #include "argshand.h"
 #include "utils.h"
@@ -14,7 +15,7 @@
 #include "itdat.h"
 #include "InputOutput.hpp"
 #include "test.hpp"
-#include <map>
+
 #define PRINT 0
 
 using namespace std;
@@ -24,9 +25,8 @@ int main(int argc, char *argv[])
 {
 
 	int i;
-	double Alpha;  // Termination criterion diam([LB,incumb])<=Alpha.
-	ConstData CtD; // ConstantData. See utils.h
-	std::vector<BOX *> boxTemporales;
+	double Alpha;			  // Termination criterion diam([LB,incumb])<=Alpha.
+	ConstData CtD;			  // ConstantData. See utils.h
 	int pCounters[NCounters]; // numero de veces que se ha mejorado
 	int PrevNUpInc;			  // this variable save the incumben
 	iTDAT iTDat;
@@ -58,7 +58,14 @@ int main(int argc, char *argv[])
 	iTDat.rVector.resize(NDim);
 	// Eval de first Box
 	fgEvalIA(CtD.NFunction, pB->X, pB->FX, pB->GX);
-	//?? Y En el caso de que la rechace que pasa siendo la primera, creo que nunca sucederia no?
+	pB->IsMon = Monotonous(pB->GX, NDim);
+	if (TestBox(pB, CtD, pCounters, iTDat))
+	{
+		// stop the program and go out
+		std::cout << "La primera caja no cumple con las condiciones." << std::endl;
+
+		exit(EXIT_FAILURE);
+	}
 
 	//   while (pB != NULL && (&pB->FX.upper() - &pB->FX.lower() > Alpha))
 	while (pB != NULL && pB->Width > Alpha)
@@ -68,6 +75,8 @@ int main(int argc, char *argv[])
 		BOX *pBoXG2 = new BOX(*pB); // Crear otro BOX como copia de B
 
 		pB->Divides(*pBoXG1, *pBoXG2); // Divide B en BoXG1 y BoXG2
+
+		// teste de EvalIA
 		fgEvalIA(CtD.NFunction, pBoXG1->X, pBoXG1->FX, pBoXG1->GX);
 		fgEvalIA(CtD.NFunction, pBoXG2->X, pBoXG2->FX, pBoXG2->GX);
 
@@ -79,30 +88,49 @@ int main(int argc, char *argv[])
 		result1 = TestBox(pBoXG1, CtD, pCounters, iTDat);
 		result2 = TestBox(pBoXG2, CtD, pCounters, iTDat);
 
-		// print resultado
-		std::cout << result1 << std::endl;
-
-		boxTemporales.push_back(pBoXG1); // No olvides liberar el último B si ya no es necesarioAlmacenar punteros en el vector
-		boxTemporales.push_back(pBoXG2);
+		if (result1 == 0 && result2 == 0)
+		{
+			std::cout << "En la evaluacion :" << i << " no se descarta ninguna" << std::endl;
+			// Comparativa de sus F
+			if (pBoXG1->FX.lower() < pBoXG2->FX.lower())
+			{
+				// pBoXG1 es mejor
+				delete pB;
+				pB = pBoXG1;
+			}
+			else
+			{
+				// pBoXG2 es mejor
+				delete pB;
+				pB = pBoXG2;
+			}
+		}
+		else if (result1 == 0 && result2 == 1)
+		{
+			std::cout << "En la evaluacion :" << i << " Ganadora 1" << std::endl;
+			// pBoXG1 es mejor
+			delete pB;
+			pB = pBoXG1;
+		}
+		else if (result2 == 0 && result1 == 1)
+		{
+			std::cout << "En la evaluacion :" << i << " Ganadora 2" << std::endl;
+			// pBoXG2 es mejor
+			delete pB;
+			pB = pBoXG2;
+		}
+		else
+		{
+			std::cout << "En la evaluacion :" << i << " Ninguna de las dos, procedemos a null" << std::endl;
+			delete pB;
+			pB = NULL;
+		}
 
 		// pintarlas aqui
 		pBoXG1 = nullptr;
 		pBoXG2 = nullptr;
-		delete pB; // Destruir B explícitamente
-		pB = nullptr;
-		pB = boxTemporales[boxTemporales.size() - 1];
-		boxTemporales.pop_back(); // Liberar el último B creado
 		i++;
 	}
-
-	BOX *pBTemp;
-	// Recorrer todos los elementos y borrar su contenido
-	for (size_t i = 0; i < boxTemporales.size(); i++)
-	{
-		pBTemp = boxTemporales[i];
-		delete pBTemp;
-	}
-	boxTemporales.clear();
 
 	// Liberar el ultimo B creado
 	delete pB;

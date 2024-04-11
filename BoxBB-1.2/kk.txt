@@ -1,61 +1,8 @@
-Box.cpp: In member function ‘void BOX::Divides(BOX&, BOX&)’:
-Box.cpp:127:45: warning: ‘itvWinner’ may be used uninitialized [-Wmaybe-uninitialized]
-  127 |    coordenatesMiddle = mid(this->X[itvWinner]);
-      |                                             ^
-Box.cpp:109:8: note: ‘itvWinner’ was declared here
-  109 |    int itvWinner;            // Vector of itv to divide
-      |        ^~~~~~~~~
-InputOutput.cpp: In function ‘void CheckMagicNumber(FILE*)’:
-InputOutput.cpp:49:10: warning: ignoring return value of ‘int fscanf(FILE*, const char*, ...)’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
-   49 |    fscanf(FIn, "%s %s", cadena, cadena1);
-      |    ~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-InputOutput.cpp: In function ‘VOID ReadProblem(PCHAR, ConstData&)’:
-InputOutput.cpp:71:10: warning: ignoring return value of ‘int fscanf(FILE*, const char*, ...)’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
-   71 |    fscanf(FIn, "%s", cadena);
-      |    ~~~~~~^~~~~~~~~~~~~~~~~~~
-InputOutput.cpp:80:10: warning: ignoring return value of ‘int fscanf(FILE*, const char*, ...)’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
-   80 |    fscanf(FIn, "%s %s ", cadena, cadena1);
-      |    ~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-InputOutput.cpp:95:13: warning: ignoring return value of ‘int fscanf(FILE*, const char*, ...)’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
-   95 |       fscanf(FIn, "%s", cadena);
-      |       ~~~~~~^~~~~~~~~~~~~~~~~~~
-InputOutput.cpp:97:13: warning: ignoring return value of ‘int fscanf(FILE*, const char*, ...)’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
-   97 |       fscanf(FIn, "%s", cadena);
-      |       ~~~~~~^~~~~~~~~~~~~~~~~~~
-InputOutput.cpp:103:10: warning: ignoring return value of ‘int fscanf(FILE*, const char*, ...)’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
-  103 |    fscanf(FIn, "%s      %s", cadena, cadena1);
-      |    ~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-test.cpp:70:27: error: ‘iTDAT’ has not been declared
-   70 | bool RangeUpTest(PBOX pB, iTDAT &iTDat)
-      |                           ^~~~~
-test.cpp: In function ‘bool RangeUpTest(PBOX, int&)’:
-test.cpp:72:36: error: request for member ‘pBIncumb’ in ‘iTDat’, which is of non-class type ‘int’
-   72 |         if (pB->FX.lower() > iTDat.pBIncumb->F.upper())
-      |                                    ^~~~~~~~
-test.cpp: At global scope:
-test.cpp:85:55: error: ‘iTDAT’ has not been declared
-   85 | bool TestBox(PBOX pB, ConstData &CtD, PINT pCounters, iTDAT &iTDat)
-      |                                                       ^~~~~
-test.cpp: In function ‘bool TestBox(PBOX, ConstData&, PINT, int&)’:
-test.cpp:96:17: error: ‘DrawBox’ was not declared in this scope
-   96 |                 DrawBox(pB, CtD, true, "#c08040"); // Draw  Brown
-      |                 ^~~~~~~
-test.cpp:101:17: error: ‘class BOX’ has no member named ‘IsMon’
-  101 |         if (pB->IsMon) // Monotonous() returns if 0 in G
-      |                 ^~~~~
-test.cpp:105:25: error: ‘DelBox’ was not declared in this scope
-  105 |                         DelBox(CtD.NWin, pB->NBox);
-      |                         ^~~~~~
-test.cpp:106:25: error: ‘DrawBox’ was not declared in this scope
-  106 |                         DrawBox(pB, CtD, true, "#00e000"); // Monotonous and interior
-      |                         ^~~~~~~
-test.cpp:107:36: error: ‘GetNewNBox’ was not declared in this scope
-  107 |                         pB->NBox = GetNewNBox();                   // To not delete the reduced area at reduce
-      |                                    ^~~~~~~~~~
-test.cpp:109:22: error: ‘ReduceBox’ was not declared in this scope
-  109 |                 if (!ReduceBox(pB, CtD))
-      |                      ^~~~~~~~~
-test.cpp:117:25: error: ‘DrawBox’ was not declared in this scope
-  117 |                         DrawBox(pB, CtD, true, "#c08040"); // Draw  Brown
-      |                         ^~~~~~~
-make: *** [makefile:34: test.o] Error 1
+En la evaluacion :10 Ganadora 1
+En la evaluacion :11 Ganadora 1
+En la evaluacion :12 Ganadora 2
+En la evaluacion :13 Ganadora 1
+En la evaluacion :14 no se descarta ninguna
+En la evaluacion :15 Ganadora 2
+En la evaluacion :16 Ganadora 2
+En la evaluacion :17 Ninguna de las dos, procedemos a null
