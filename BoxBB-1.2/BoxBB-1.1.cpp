@@ -148,7 +148,9 @@ int main(int argc, char *argv[])
 		pBoXG1 = nullptr;
 		pBoXG2 = nullptr;
 		pCounters[CNIters]++;
+		std::cerr << "Antes del eval" << std::endl;
 		EvalBoxCentre(pB, CtD, iTDat, pCounters);
+		std::cerr << "Despues del eval" << std::endl;
 	}
 
 	// Liberar el ultimo B creado
