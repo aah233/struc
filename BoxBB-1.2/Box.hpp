@@ -70,6 +70,7 @@ public:
   bool ReduceBox(ConstData &CtD);
   void ReplaceBox(const BOX &B);
   void DrawBox(ConstData &CtD, bool Fill, PCHARCt color);
+  void DrawBPoint(ConstData CtD, PCHARCt color);
   friend int Dimension(const BOX &);
   friend ostream &operator<<(ostream &os, const BOX &B);
 };

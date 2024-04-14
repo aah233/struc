@@ -148,6 +148,7 @@ int main(int argc, char *argv[])
 		pBoXG1 = nullptr;
 		pBoXG2 = nullptr;
 		pCounters[CNIters]++;
+		EvalBoxCentre(pB, CtD, iTDat, pCounters);
 	}
 
 	// Liberar el ultimo B creado

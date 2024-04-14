@@ -15,6 +15,8 @@
 bool RangeUpTest(PBOX pB, iTDAT &iTDat);
 // VOID CutOffTest		(PBTB pbtb, ConstData & CtD,iTDAT & iTDat);
 bool TestBox(PBOX pB, ConstData &CtD, PINT pCounters, iTDAT &iTDat);
+void EvalBoxCentre(PBOX pB, ConstData CtD, iTDAT iTDat, PINT pCounters);
+void EvalBPoint(PBOX pBPoint, PBOX pBIncumb, ConstData CtD, PINT pCounters);
 
 #endif /*__TEST__*/
 /*---------------------------------------------------------------------------*/

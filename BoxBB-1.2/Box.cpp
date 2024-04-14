@@ -227,6 +227,29 @@ void BOX::DrawBox(ConstData &CtD, bool Fill, PCHARCt color)
 }
 
 /*---------------------------------------------------------------------------*/
+void BOX::DrawBPoint(ConstData CtD, PCHARCt color)
+{
+   double Pos;
+
+   printf("%d\n", CtD.NWin);
+   printf("DrawPoint\n");
+
+   Pos = Normalice(mid(this->X[0]), CtD.XLim(0).lower(), width(CtD.XLim(0)));
+   printf("%f\n", Pos * CtD.WWidth);
+   Pos = Normalice(mid(this->X[1]), CtD.XLim(1).lower(), width(CtD.XLim(1)));
+   // Change pos in [0,1] to [1,0]
+   Pos *= -1.0;
+   Pos += 1.0;
+   printf("%f\n", Pos * CtD.WWidth);
+
+   printf("%s\n", color);
+
+   printf("%d\n", this->NBox);
+
+   fflush(stdout);
+}
+
+/*---------------------------------------------------------------------------*/
 void BOX::ReplaceBox(const BOX &B)
 {
    int n = B.X.size();

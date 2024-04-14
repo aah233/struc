@@ -122,4 +122,40 @@ bool TestBox(PBOX pB, ConstData &CtD, PINT pCounters, iTDAT &iTDat)
 }
 
 /*---------------------------------------------------------------------------*/
+void EvalBoxCentre(PBOX pB, ConstData CtD, iTDAT iTDat, PINT pCounters)
+{
+	PBOX pBCentre = iTDat.pBPoint;
+	PBOX pBIncumb = iTDat.pBIncumb;
+
+	// We need PREAL for ProcessPoint and rVector for innerprod
+	for (int i = 0; i < CtD.NDim; i++)
+		pBCentre->X[i] = iTDat.rVector(i) = mid(pB->X(i));
+
+	pBCentre->NBox = pB->NBox;
+	EvalBPoint(pBCentre, pBIncumb, CtD, pCounters);
+}
+
 /*---------------------------------------------------------------------------*/
+
+void EvalBPoint(PBOX pBPoint, PBOX pBIncumb, ConstData CtD, PINT pCounters)
+{
+	fEvalIA(CtD.NFunction, pBPoint->X, pBPoint->FX);
+	pCounters[CNEvalP]++;
+
+	if (CtD.Draw)
+		pBPoint->DrawBPoint(CtD, "Yellow");
+
+	if (pBPoint->FX.upper() < pBIncumb->FX.upper())
+	{
+		if (CtD.Draw)
+		{
+			DrawColorPoint(CtD.Draw, 0, pBIncumb->NBox, "Yellow");
+			DrawColorPoint(CtD.Draw, 0, pBPoint->NBox, "Red");
+		}
+		pCounters[CNIncumb]++;
+		for (int i = 0; i < CtD.NDim; i++) // Copy pBCentre to pBIncumb
+			pBIncumb->X[i] = pBPoint->X[i];
+		pBIncumb->FX = pBPoint->FX;
+		pBIncumb->NBox = pBPoint->NBox;
+	}
+}
