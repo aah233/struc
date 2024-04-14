@@ -24,7 +24,6 @@ using namespace std;
 int main(int argc, char *argv[])
 {
 
-	int i;
 	double Alpha;			  // Termination criterion diam([LB,incumb])<=Alpha.
 	ConstData CtD;			  // ConstantData. See utils.h
 	int pCounters[NCounters]; // numero de veces que se ha mejorado
@@ -38,7 +37,7 @@ int main(int argc, char *argv[])
 	cerr.imbue(std::locale("en_US.UTF-8"));
 
 	// Init counters
-	for (i = 0; i < NCounters; i++)
+	for (int i = 0; i < NCounters; i++)
 		pCounters[i] = 0;
 
 	// Este
@@ -68,9 +67,9 @@ int main(int argc, char *argv[])
 	}
 
 	//   while (pB != NULL && (&pB->FX.upper() - &pB->FX.lower() > Alpha))
-	while (pB != NULL && pB->Width > Alpha)
+	while (pB != nullptr && pB->Width > Alpha)
 	{
-		// Inicializar 2 divisores de caja
+		//  Inicializar 2 divisores de caja
 		BOX *pBoXG1 = new BOX(*pB); // Crear un nuevo BOX como copia de B
 		BOX *pBoXG2 = new BOX(*pB); // Crear otro BOX como copia de B
 
@@ -80,6 +79,16 @@ int main(int argc, char *argv[])
 		fgEvalIA(CtD.NFunction, pBoXG1->X, pBoXG1->FX, pBoXG1->GX);
 		fgEvalIA(CtD.NFunction, pBoXG2->X, pBoXG2->FX, pBoXG2->GX);
 
+		if (CtD.Draw)
+		{
+			pBoXG1->DrawBox(CtD, false, ""); // Not fill
+			if (CtD.Draw == 2)
+				DrawWait(CtD.NWin);
+
+			pBoXG2->DrawBox(CtD, false, "");
+			if (CtD.Draw == 2)
+				DrawWait(CtD.NWin);
+		}
 		// Eval Monotonous in the two Boxes
 		pBoXG1->IsMon = Monotonous(pBoXG1->GX, NDim);
 		pBoXG2->IsMon = Monotonous(pBoXG2->GX, NDim);
@@ -88,52 +97,63 @@ int main(int argc, char *argv[])
 		result1 = TestBox(pBoXG1, CtD, pCounters, iTDat);
 		result2 = TestBox(pBoXG2, CtD, pCounters, iTDat);
 
+		// EVALUAR EL CENTRO DE LA CAJA PARA MEJORAR EL INCUMBEN, SOLO SI HA PASADO LOS TEST
+		// Box.cpp EvalBox
+		// Cuando rechazo por monotonia hay que sumar el contador
 		if (result1 == 0 && result2 == 0)
 		{
-			std::cout << "En la evaluacion :" << i << " no se descarta ninguna" << std::endl;
+			std::cerr << "En la evaluacion :" << pCounters[CNIters] << " no se descarta ninguna" << std::endl;
 			// Comparativa de sus F
 			if (pBoXG1->FX.lower() < pBoXG2->FX.lower())
 			{
 				// pBoXG1 es mejor
 				delete pB;
+				delete pBoXG2;
 				pB = pBoXG1;
 			}
 			else
 			{
 				// pBoXG2 es mejor
 				delete pB;
+				delete pBoXG1;
 				pB = pBoXG2;
 			}
 		}
 		else if (result1 == 0 && result2 == 1)
 		{
-			std::cout << "En la evaluacion :" << i << " Ganadora 1" << std::endl;
+			std::cerr << "En la evaluacion :" << pCounters[CNIters] << " Ganadora 1" << std::endl;
 			// pBoXG1 es mejor
 			delete pB;
+			delete pBoXG2;
 			pB = pBoXG1;
 		}
 		else if (result2 == 0 && result1 == 1)
 		{
-			std::cout << "En la evaluacion :" << i << " Ganadora 2" << std::endl;
+			std::cerr << "En la evaluacion :" << pCounters[CNIters] << " Ganadora 2" << std::endl;
 			// pBoXG2 es mejor
 			delete pB;
+			delete pBoXG1;
 			pB = pBoXG2;
 		}
 		else
 		{
-			std::cout << "En la evaluacion :" << i << " Ninguna de las dos, procedemos a null" << std::endl;
+			std::cerr << "En la evaluacion :" << pCounters[CNIters] << " Ninguna de las dos, procedemos a null" << std::endl;
 			delete pB;
-			pB = NULL;
+			delete pBoXG1;
+			delete pBoXG2;
+			pB = nullptr;
 		}
 
 		// pintarlas aqui
 		pBoXG1 = nullptr;
 		pBoXG2 = nullptr;
-		i++;
+		pCounters[CNIters]++;
 	}
 
 	// Liberar el ultimo B creado
 	delete pB;
+	//	delete pBoXG1;
+	//	delete pBoXG2;
 
 	return 0;
 }
