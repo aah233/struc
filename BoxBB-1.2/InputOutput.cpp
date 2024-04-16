@@ -47,7 +47,11 @@ void CheckMagicNumber(FILE *FIn)
    INT MagicNumber; /*End of input Archive, to know if all was readed*/
    char cadena[256], cadena1[256];
 
-   fscanf(FIn, "%s %s", cadena, cadena1);
+   if (fscanf(FIn, "%s %s", cadena, cadena1) != 2)
+   {
+      fprintf(stderr, "Error reading input file, MagicNumber.\n"); // CHANGUED
+   }
+
    MagicNumber = atoi(cadena1);
    if (MagicNumber != 123456)
    {
@@ -69,7 +73,10 @@ VOID ReadProblem(PCHAR FileName, ConstData &CtD)
    FIn = OpenFile(FileName, "r");
 
    // Check if the searxh region is simplex or a Box
-   fscanf(FIn, "%s", cadena);
+   if (fscanf(FIn, "%s", cadena) != 2)
+   {
+      fprintf(stderr, "searxh region isn't simplex or a Box.\n"); // CHANGUED
+   }
 
    if (!strcmp(cadena, "Box") == 0)
    {
@@ -78,7 +85,12 @@ VOID ReadProblem(PCHAR FileName, ConstData &CtD)
    }
 
    /*Number of Dimensions*/
-   fscanf(FIn, "%s %s ", cadena, cadena1);
+
+   if (fscanf(FIn, "%s %s ", cadena, cadena1) != 2)
+   {
+      fprintf(stderr, "Number of Dimension error.\n"); // CHANGUED
+   }
+
    CtD.NDim = atoi(cadena1);
 
    if (CtD.NDim <= 0 || CtD.NDim > 32)
@@ -93,15 +105,26 @@ VOID ReadProblem(PCHAR FileName, ConstData &CtD)
    // Get Box data
    for (int i = 0; i < CtD.NDim; i++) // c-xsc starts in 1
    {
-      fscanf(FIn, "%s", cadena);
+      if (fscanf(FIn, "%s", cadena) != 2)
+      {
+         fprintf(stderr, "Error reading input file, InitBox.\n"); // CHANGUED
+      }
+
       CtD.InitBox(i).lower() = atof(cadena);
-      fscanf(FIn, "%s", cadena);
+      if (fscanf(FIn, "%s", cadena) != 2)
+      {
+         fprintf(stderr, "Error reading input file, InitBox.\n"); // CHANGUED
+      }
       CtD.InitBox(i).upper() = atof(cadena);
    }
 
    CheckMagicNumber(FIn);
    // Minimum
-   fscanf(FIn, "%s	%s", cadena, cadena1);
+   if (fscanf(FIn, "%s %s", cadena, cadena1) != 2)
+   {
+      fprintf(stderr, "Error reading input file, Min.\n"); // CHANGUED
+   }
+
    CtD.Min = atof(cadena1);
    fprintf(stderr, "Min=%g.\n", CtD.Min);
    CloseFile(FIn);

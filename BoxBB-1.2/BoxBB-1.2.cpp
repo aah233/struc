@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
 	double Alpha;			  // Termination criterion diam([LB,incumb])<=Alpha.
 	ConstData CtD;			  // ConstantData. See utils.h
 	int pCounters[NCounters]; // numero de veces que se ha mejorado
-	int PrevNUpInc;			  // this variable save the incumben
+	// int PrevNUpInc;			  // this variable save the incumben
 	iTDAT iTDat;
 	bool result1, result2;
 
@@ -49,11 +49,11 @@ int main(int argc, char *argv[])
 	// Create a new Box with the paramns
 	BOX *pB = new BOX(CtD.InitBox);
 	// generate itad, in this pB we gonna save the initial box
-    iTDat.pBPoint =new BOX(CtD.NDim);
-    iTDat.pBIncumb=new BOX(CtD.NDim);
-    iTDat.pBIncumb->FX.upper()=DBL_MAX;
-    iTDat.pBIncumb->FX.lower()=DBL_MAX;
-    iTDat.rVector.resize(NDim); 
+	iTDat.pBPoint = new BOX(CtD.NDim);
+	iTDat.pBIncumb = new BOX(CtD.NDim);
+	iTDat.pBIncumb->FX.upper() = DBL_MAX;
+	iTDat.pBIncumb->FX.lower() = DBL_MAX;
+	iTDat.rVector.resize(NDim);
 
 	iTDat.rVector.resize(NDim);
 	// Eval de first Box
@@ -150,8 +150,8 @@ int main(int argc, char *argv[])
 		pBoXG2 = nullptr;
 		pCounters[CNIters]++;
 		std::cerr << "Antes del eval" << std::endl;
-		if (pB!=nullptr)
-		 EvalBoxCentre(pB, CtD, iTDat, pCounters);
+		if (pB != nullptr)
+			EvalBoxCentre(pB, CtD, iTDat, pCounters);
 		std::cerr << "Despues del eval" << std::endl;
 	}
 
