@@ -1,6 +1,6 @@
 PREFIX = /home/$(shell whoami)
-DEBUG  =  
-#DEBUG  =  -g
+#DEBUG  =  
+DEBUG  =  -g
 #FLAGS  = -Wall 
 FLAGS  = -Wall -O3 -DNDEBUG -DKV_FASTROUND 
 INC    = -I. -I$(PREFIX)/kv/
@@ -10,7 +10,7 @@ CC     = g++
 
 #------------------------------------------------------------------------------
 #------------------------------------------------------------------------------
-LINK_TARGET = BoxBB-1.1
+LINK_TARGET = BoxBB-1.2
 OBJS = \
 	argshand.o \
 	getmem.o \

@@ -1,14 +1,14 @@
-time timeout 15m BoxBB-1.1 -s SearchRegions/BoxFred.txt -a 1e-6 -f 3 -i 2 
-time timeout 15m BoxBB-1.1 -s SearchRegions/BoxEligius.txt -a 1e-6 -f 3 -i 2 
-time timeout 15m BoxBB-1.1 -s SearchRegions/BoxGP.txt -a 1e-6 -f 4 -i 2 
-time timeout 15m BoxBB-1.1 -s SearchRegions/BoxTHCB.txt -a 1e-6 -f 5 -i 2 
-time timeout 15m BoxBB-1.1 -s SearchRegions/BoxSHCB.txt -a 1e-6 -f 6 -i 2 
-time timeout 15m BoxBB-1.1 -s SearchRegions/BoxGriew7.txt -a 1e-6 -f 7 -i 2 
-time timeout 15m BoxBB-1.1 -s SearchRegions/BoxShekel.txt -a 1e-6 -f 8 -i 2 
+time timeout 15m BoxBB-1.1 -s SearchRegions/BoxFred.txt -a 1e-6 -f 3 
+time timeout 15m BoxBB-1.1 -s SearchRegions/BoxEligius.txt -a 1e-6 -f 3 
+time timeout 15m BoxBB-1.1 -s SearchRegions/BoxGP.txt -a 1e-6 -f 4 
+time timeout 15m BoxBB-1.1 -s SearchRegions/BoxTHCB.txt -a 1e-6 -f 5 
+time timeout 15m BoxBB-1.1 -s SearchRegions/BoxSHCB.txt -a 1e-6 -f 6 
+time timeout 15m BoxBB-1.1 -s SearchRegions/BoxGriew7.txt -a 1e-6 -f 7 
+time timeout 15m BoxBB-1.1 -s SearchRegions/BoxShekel.txt -a 1e-6 -f 8 
 time timeout 15m BoxBB-1.1 -s SearchRegions/BoxHartman3.txt -a 1e-6 -f 9 -i 2
-time timeout 15m BoxBB-1.1 -s SearchRegions/BoxHartman4.txt -a 1e-6 -f 10 -i 2 
-time timeout 15m BoxBB-1.1 -s SearchRegions/BoxHartman6.txt -a 1e-6 -f 11 -i 2 
-time timeout 15m BoxBB-1.1 -s SearchRegions/BoxLevy8.txt -a 1e-6 -f 12 -i 2 
+time timeout 15m BoxBB-1.1 -s SearchRegions/BoxHartman4.txt -a 1e-6 -f 10 
+time timeout 15m BoxBB-1.1 -s SearchRegions/BoxHartman6.txt -a 1e-6 -f 11 
+time timeout 15m BoxBB-1.1 -s SearchRegions/BoxLevy8.txt -a 1e-6 -f 12 
 time timeout 15m BoxBB-1.1 -s SearchRegions/BoxSchubert.txt -a 1e-6 -f 13 -i 2
 time timeout 15m BoxBB-1.1 -s SearchRegions/BoxMcCorm.txt -a 1e-6 -f 14 -i 2
 time timeout 15m BoxBB-1.1 -s SearchRegions/BoxRS7.txt -a 1e-6 -f 15 -i 2

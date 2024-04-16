@@ -149,7 +149,7 @@ bool BOX::ReduceBox(ConstData &CtD)
 /*----------------------------------------------------------------------------*/
 void BOX::Divides(BOX &B1, BOX &B2)
 {
-   int itvWinner;            // Vector of itv to divide
+   int itvWinner=0;          // Vector of itv to divide
    double coordenatesMiddle; // Middle of the itvWinner
 
    // check if the itvV is not empty
