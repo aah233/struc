@@ -47,7 +47,7 @@ void CheckMagicNumber(FILE *FIn)
    INT MagicNumber; /*End of input Archive, to know if all was readed*/
    char cadena[256], cadena1[256];
 
-   if (fscanf(FIn, "%s %s", cadena, cadena1) != 2)
+   if (fscanf(FIn, "%s %s", cadena, cadena1) != 1)
    {
       fprintf(stderr, "Error reading input file, MagicNumber.\n"); // CHANGUED
    }
@@ -73,7 +73,7 @@ VOID ReadProblem(PCHAR FileName, ConstData &CtD)
    FIn = OpenFile(FileName, "r");
 
    // Check if the searxh region is simplex or a Box
-   if (fscanf(FIn, "%s", cadena) != 2)
+   if (fscanf(FIn, "%s", cadena) != 1)
    {
       fprintf(stderr, "searxh region isn't simplex or a Box.\n"); // CHANGUED
    }
@@ -86,7 +86,7 @@ VOID ReadProblem(PCHAR FileName, ConstData &CtD)
 
    /*Number of Dimensions*/
 
-   if (fscanf(FIn, "%s %s ", cadena, cadena1) != 2)
+   if (fscanf(FIn, "%s %s ", cadena, cadena1) != 1)
    {
       fprintf(stderr, "Number of Dimension error.\n"); // CHANGUED
    }
@@ -105,13 +105,13 @@ VOID ReadProblem(PCHAR FileName, ConstData &CtD)
    // Get Box data
    for (int i = 0; i < CtD.NDim; i++) // c-xsc starts in 1
    {
-      if (fscanf(FIn, "%s", cadena) != 2)
+      if (fscanf(FIn, "%s", cadena) != 1)
       {
          fprintf(stderr, "Error reading input file, InitBox.\n"); // CHANGUED
       }
 
       CtD.InitBox(i).lower() = atof(cadena);
-      if (fscanf(FIn, "%s", cadena) != 2)
+      if (fscanf(FIn, "%s", cadena) != 1)
       {
          fprintf(stderr, "Error reading input file, InitBox.\n"); // CHANGUED
       }
@@ -120,7 +120,7 @@ VOID ReadProblem(PCHAR FileName, ConstData &CtD)
 
    CheckMagicNumber(FIn);
    // Minimum
-   if (fscanf(FIn, "%s %s", cadena, cadena1) != 2)
+   if (fscanf(FIn, "%s %s", cadena, cadena1) != 1)
    {
       fprintf(stderr, "Error reading input file, Min.\n"); // CHANGUED
    }

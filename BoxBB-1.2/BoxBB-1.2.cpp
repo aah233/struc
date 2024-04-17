@@ -15,6 +15,7 @@
 #include "itdat.h"
 #include "InputOutput.hpp"
 #include "test.hpp"
+#include "avlTree.hpp"
 
 #define PRINT 0
 
@@ -30,11 +31,24 @@ int main(int argc, char *argv[])
 	// int PrevNUpInc;			  // this variable save the incumben
 	iTDAT iTDat;
 	bool result1, result2;
-
 	// std::cout.precision(17);
 	setlocale(LC_NUMERIC, "en_US.UTF-8"); // Use thousands separators
 	cout.imbue(std::locale("en_US.UTF-8"));
 	cerr.imbue(std::locale("en_US.UTF-8"));
+	AVLTree<int, std::string> myAVLTree(1, "RootNode");
+
+	// Obteniendo la raíz del árbol
+	AVLNode<int, std::string> *rootNode = myAVLTree.getRoot();
+
+	// Comprobando si la raíz no es nullptr y luego imprimiendo el valor
+	if (rootNode != nullptr)
+	{
+		std::cerr << "Root key: " << rootNode->key << ", Root value: " << rootNode->value << std::endl;
+	}
+	else
+	{
+		std::cerr << "Root is nullptr." << std::endl;
+	}
 
 	// Init counters
 	for (int i = 0; i < NCounters; i++)
@@ -48,6 +62,8 @@ int main(int argc, char *argv[])
 
 	// Create a new Box with the paramns
 	BOX *pB = new BOX(CtD.InitBox);
+	// imprimir por pantalla sizeof
+	cerr << "Memoria caja" << sizeof(*pB) << endl;
 	// generate itad, in this pB we gonna save the initial box
 	iTDat.pBPoint = new BOX(CtD.NDim);
 	iTDat.pBIncumb = new BOX(CtD.NDim);
@@ -79,7 +95,6 @@ int main(int argc, char *argv[])
 		// teste de EvalIA
 		fgEvalIA(CtD.NFunction, pBoXG1->X, pBoXG1->FX, pBoXG1->GX);
 		fgEvalIA(CtD.NFunction, pBoXG2->X, pBoXG2->FX, pBoXG2->GX);
-
 		if (CtD.Draw)
 		{
 			pBoXG1->DrawBox(CtD, false, ""); // Not fill

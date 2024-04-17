@@ -31,3 +31,6 @@ time timeout 15m BoxBB-1.2 -s SearchRegions/BoxTrid3.txt -a 1e-6 -f 20 -i 2
 time timeout 15m BoxBB-1.2 -s SearchRegions/BoxTrid5.txt -a 1e-6 -f 20 -i 2
 
 #For graphical view of 2D cases add " -tcl 1 | WinZoom.tcl "
+
+
+./BoxBB-1.2 -s SearchRegions/BoxFred.txt -a 1e-6 -f 3 -tcl 2 | ./WinZoom.tcl 

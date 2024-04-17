@@ -331,8 +331,8 @@ while { ( 0 < [ gets stdin w ] )} {
    #if point did not already exists.
    if { [llength $Point] == 0 } {
     .win$w.c create rect \
-     [expr $x-.001] [expr $y-.001] \
-     [expr $x+.001] [expr $y+.001] -fill $color -width 1 -fill $color \
+     [expr $x-3] [expr $y-3] \
+     [expr $x+3] [expr $y+3] -fill $color -width 1 -fill $color \
      -outline $border -tag Point$NPoint
 
     ObjectZoom .win$w.c Point$NPoint

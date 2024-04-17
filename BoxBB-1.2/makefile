@@ -19,7 +19,7 @@ OBJS = \
 	Functions.o \
 	Box.o \
 	InputOutput.o \
-	test.o
+	test.o 
 
 REBUILDABLES = $(OBJS) $(LINK_TARGET)
 
