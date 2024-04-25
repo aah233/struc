@@ -117,6 +117,10 @@ AVLNode<KeyType, ValueType> *AVLTree<KeyType, ValueType>::insert(AVLNode<KeyType
         node->right = insert(node->right, key, value);
     else if (key == node->key)
     {
+        if (node->dataList.size() == 0) // if the list is empty, add the value of the node
+        {
+            node->dataList.push_back(node->value);
+        }
         node->dataList.push_back(value);
         return node;
     }

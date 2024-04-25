@@ -34,6 +34,12 @@ int main()
     // Inserta varios elementos en el árbol
     tree->insert(tree->getRoot(), 1, "one");
     printTree(tree->getRoot(), *tree);
+    // imprimir contenido lista
+    std::cout << "Contenido de la lista: " << std::endl;
+    for (std::string i : tree->getRoot()->dataList)
+    {
+        std::cout << i << std::endl;
+    }
     tree->insert(tree->getRoot(), -1, "minus one");
     printTree(tree->getRoot(), *tree);
     tree->insert(tree->getRoot(), 2, "two");
