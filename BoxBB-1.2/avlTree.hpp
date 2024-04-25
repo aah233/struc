@@ -16,7 +16,6 @@ public:
 
     // Destructor
     ~AVLTree();
-
     // Métodos públicos
     AVLNode<KeyType, ValueType> *getRoot();
     AVLNode<KeyType, ValueType> *insert(AVLNode<KeyType, ValueType> *node, KeyType key, ValueType value);
@@ -25,6 +24,9 @@ public:
     int getBalance(AVLNode<KeyType, ValueType> *node);
     AVLNode<KeyType, ValueType> *rotateRight(AVLNode<KeyType, ValueType> *y);
     AVLNode<KeyType, ValueType> *rotateLeft(AVLNode<KeyType, ValueType> *x);
+
+private:
+    void deleteSubtree(AVLNode<KeyType, ValueType> *node);
 };
 
 // Definitions of the AVLTree member functions
@@ -113,7 +115,7 @@ AVLNode<KeyType, ValueType> *AVLTree<KeyType, ValueType>::insert(AVLNode<KeyType
         node->left = insert(node->left, key, value);
     else if (key > node->key)
         node->right = insert(node->right, key, value);
-    else // Claves duplicadas no se permiten en el AVL
+    else // Claves duplicadas no se permiten en el AVL por ahora
         return node;
 
     // 2. Actualizar la altura de este nodo ancestro
@@ -152,9 +154,21 @@ AVLNode<KeyType, ValueType> *AVLTree<KeyType, ValueType>::insert(AVLNode<KeyType
 /********************************************************************/
 
 template <typename KeyType, typename ValueType>
+void AVLTree<KeyType, ValueType>::deleteSubtree(AVLNode<KeyType, ValueType> *node)
+{
+    if (node != nullptr)
+    {
+        deleteSubtree(node->left);
+        deleteSubtree(node->right);
+        delete node;
+    }
+}
+
+/********************************************************************/
+template <typename KeyType, typename ValueType>
 AVLTree<KeyType, ValueType>::~AVLTree()
 {
-    delete root;
+    deleteSubtree(root);
 }
 
 #endif

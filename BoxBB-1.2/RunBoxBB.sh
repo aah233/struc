@@ -34,3 +34,5 @@ time timeout 15m BoxBB-1.2 -s SearchRegions/BoxTrid5.txt -a 1e-6 -f 20 -i 2
 
 
 ./BoxBB-1.2 -s SearchRegions/BoxFred.txt -a 1e-6 -f 3 -tcl 2 | ./WinZoom.tcl 
+
+g++ -o testAVLTree testAVLTree.cpp
