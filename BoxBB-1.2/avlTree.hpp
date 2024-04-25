@@ -115,6 +115,11 @@ AVLNode<KeyType, ValueType> *AVLTree<KeyType, ValueType>::insert(AVLNode<KeyType
         node->left = insert(node->left, key, value);
     else if (key > node->key)
         node->right = insert(node->right, key, value);
+    else if (key == node->key)
+    {
+        node->dataList.push_back(value);
+        return node;
+    }
     else // Claves duplicadas no se permiten en el AVL por ahora
         return node;
 
