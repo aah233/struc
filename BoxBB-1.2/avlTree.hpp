@@ -19,6 +19,8 @@ public:
     // Métodos públicos
     AVLNode<KeyType, ValueType> *getRoot();
     AVLNode<KeyType, ValueType> *insert(AVLNode<KeyType, ValueType> *node, KeyType key, ValueType value);
+    AVLNode<KeyType, ValueType> *getMin();
+    AVLNode<KeyType, ValueType> *getMax();
     int getHeight(AVLNode<KeyType, ValueType> *node);
     void updateHeight(AVLNode<KeyType, ValueType> *node);
     int getBalance(AVLNode<KeyType, ValueType> *node);
@@ -27,6 +29,7 @@ public:
 
 private:
     void deleteSubtree(AVLNode<KeyType, ValueType> *node);
+    AVLNode<KeyType, ValueType> *balance(AVLNode<KeyType, ValueType> *node);
 };
 
 // Definitions of the AVLTree member functions
@@ -130,36 +133,42 @@ AVLNode<KeyType, ValueType> *AVLTree<KeyType, ValueType>::insert(AVLNode<KeyType
     // 2. Actualizar la altura de este nodo ancestro
     updateHeight(node);
 
-    // 3. Obtener el factor de balance para verificar si este nodo se desequilibró
+    return balance(node);
+}
+/********************************************************************/
+template <typename KeyType, typename ValueType>
+AVLNode<KeyType, ValueType> *AVLTree<KeyType, ValueType>::balance(AVLNode<KeyType, ValueType> *node)
+{
+    if (node == nullptr)
+        return nullptr;
+
+    updateHeight(node);
     int balance = getBalance(node);
 
-    // Rotaciones para balancear el árbol
-    // Caso izquierda-izquierda
-    if (balance > 1 && key < node->left->key)
+    // Caso Izquierda-Izquierda (Left-Left)
+    if (balance > 1 && getBalance(node->left) >= 0)
         return rotateRight(node);
 
-    // Caso derecha-derecha
-    if (balance < -1 && key > node->right->key)
-        return rotateLeft(node);
-
-    // Caso izquierda-derecha
-    if (balance > 1 && key > node->left->key)
+    // Caso Izquierda-Derecha (Left-Right)
+    if (balance > 1 && getBalance(node->left) < 0)
     {
         node->left = rotateLeft(node->left);
         return rotateRight(node);
     }
 
-    // Caso derecha-izquierda
-    if (balance < -1 && key < node->right->key)
+    // Caso Derecha-Derecha (Right-Right)
+    if (balance < -1 && getBalance(node->right) <= 0)
+        return rotateLeft(node);
+
+    // Caso Derecha-Izquierda (Right-Left)
+    if (balance < -1 && getBalance(node->right) > 0)
     {
         node->right = rotateRight(node->right);
         return rotateLeft(node);
     }
 
-    // Retorna el nodo (sin cambios)
     return node;
 }
-
 /********************************************************************/
 
 template <typename KeyType, typename ValueType>
@@ -171,6 +180,52 @@ void AVLTree<KeyType, ValueType>::deleteSubtree(AVLNode<KeyType, ValueType> *nod
         deleteSubtree(node->right);
         delete node;
     }
+}
+/********************************************************************/
+template <typename KeyType, typename ValueType>
+AVLNode<KeyType, ValueType> *AVLTree<KeyType, ValueType>::getMin()
+{
+    if (root == nullptr)
+    {
+        // print error
+        return nullptr;
+    }
+
+    // Encontrar el nodo con la clave mínima
+    AVLNode<KeyType, ValueType> *current = root; // 0
+    AVLNode<KeyType, ValueType> *parent = nullptr;
+    while (current->left != nullptr)
+    {
+        parent = current;
+        current = current->left;
+    }
+
+    //   Ahora 'current' es el nodo con la clave mínima
+    if (!current->dataList.empty())
+    {
+        ValueType minValue = current->dataList.front();                 // Obtener el valor del frente de la lista
+        current->dataList.pop_front();                                  // Eliminar el valor del frente de la lista
+        return new AVLNode<KeyType, ValueType>(current->key, minValue); // Devolver el valor
+    }
+
+    // Si current tiene un hijo derecho, debemos reemplazar current con este hijo
+    if (parent == nullptr)
+    {
+        // El mínimo es la raíz y no tiene padre
+        root = current->right;
+    }
+    else
+    {
+        parent->left = current->right;
+    }
+
+    balance(root);
+    return current;
+}
+/********************************************************************/
+template <typename KeyType, typename ValueType>
+AVLNode<KeyType, ValueType> *AVLTree<KeyType, ValueType>::getMax()
+{
 }
 
 /********************************************************************/
