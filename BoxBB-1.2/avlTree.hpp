@@ -107,13 +107,13 @@ AVLNode<KeyType, ValueType> *AVLTree<KeyType, ValueType>::rotateLeft(AVLNode<Key
 
     return y; // nueva raíz
 }
-
+/********************************************************************/
 template <typename KeyType, typename ValueType>
 void AVLTree<KeyType, ValueType>::insert(KeyType key, ValueType value)
 {
     root = insertRecursive(root, key, value);
 }
-
+/********************************************************************/
 template <typename KeyType, typename ValueType>
 AVLNode<KeyType, ValueType> *AVLTree<KeyType, ValueType>::insertRecursive(AVLNode<KeyType, ValueType> *node, KeyType key, ValueType value)
 {
@@ -188,16 +188,16 @@ void AVLTree<KeyType, ValueType>::deleteSubtree(AVLNode<KeyType, ValueType> *nod
 template <typename KeyType, typename ValueType>
 AVLNode<KeyType, ValueType> *AVLTree<KeyType, ValueType>::getMin()
 {
-    if (root == nullptr)
+    if (!root)
     {
-        // print error
         return nullptr;
     }
 
-    // Encontrar el nodo con la clave mínima
-    AVLNode<KeyType, ValueType> *current = root; // 0
+    AVLNode<KeyType, ValueType> *current = root;
     AVLNode<KeyType, ValueType> *parent = nullptr;
-    while (current->left != nullptr)
+
+    // Encontrar el nodo mínimo
+    while (current->left)
     {
         parent = current;
         current = current->left;
@@ -212,19 +212,23 @@ AVLNode<KeyType, ValueType> *AVLTree<KeyType, ValueType>::getMin()
     }
 
     // Si current tiene un hijo derecho, debemos reemplazar current con este hijo
-    if (parent == nullptr)
+    AVLNode<KeyType, ValueType> *replacement = current->right;
+    if (parent)
     {
-        // El mínimo es la raíz y no tiene padre
-        root = current->right;
+        parent->left = replacement; // Reemplaza el nodo mínimo con su hijo derecho
     }
     else
     {
-        parent->left = current->right;
+        root = replacement; // El mínimo era la raíz
     }
 
-    balance(root);
+    // Rebalancear desde la raíz
+    root = balance(root);
+
+    current->left = current->right = nullptr;
     return current;
 }
+
 /********************************************************************/
 template <typename KeyType, typename ValueType>
 AVLNode<KeyType, ValueType> *AVLTree<KeyType, ValueType>::getMax()

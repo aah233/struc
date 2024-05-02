@@ -52,8 +52,32 @@ int main()
     std::cout << "=================================================:" << std::endl;
     tree->insert(-1, "siete"); // Actualizado para usar solo clave y valor
     printTree(tree->getRoot(), *tree);
-    // std::cout << "Min: " << tree->getMin()->key << std::endl;
-    // printTree(tree->getRoot(), *tree);
+    std::cout << "Min: " << tree->getMin()->key << std::endl;
+    printTree(tree->getRoot(), *tree);
+    std::cout << "=================================================:" << std::endl;
+    std::cout << "Min: " << tree->getMin()->key << std::endl;
+    printTree(tree->getRoot(), *tree);
+    std::cout << "=================================================:" << std::endl;
+    std::cout << "Min: " << tree->getMin()->key << std::endl;
+    printTree(tree->getRoot(), *tree);
+    std::cout << "=================================================:" << std::endl;
+    std::cout << "Min: " << tree->getMin()->key << std::endl;
+    printTree(tree->getRoot(), *tree);
+    std::cout << "=================================================:" << std::endl;
+    std::cout << "Min: " << tree->getMin()->key << std::endl;
+    printTree(tree->getRoot(), *tree);
+    std::cout << "=================================================:" << std::endl;
+    std::cout << "Min: " << tree->getMin()->key << std::endl;
+    printTree(tree->getRoot(), *tree);
+    std::cout << "=================================================:" << std::endl;
+    std::cout << "=================================================:" << std::endl;
+    std::cout << "Min: " << tree->getMin()->key << std::endl;
+    printTree(tree->getRoot(), *tree);
+    std::cout << "=================================================:" << std::endl;
+    std::cout << "=================================================:" << std::endl;
+    std::cout << "Min: " << tree->getMin()->key << std::endl;
+    printTree(tree->getRoot(), *tree);
+    std::cout << "=================================================:" << std::endl;
     delete tree;
     return 0;
 }
