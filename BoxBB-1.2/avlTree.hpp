@@ -18,7 +18,7 @@ public:
     ~AVLTree();
     // Métodos públicos
     AVLNode<KeyType, ValueType> *getRoot();
-    AVLNode<KeyType, ValueType> *insert(AVLNode<KeyType, ValueType> *node, KeyType key, ValueType value);
+    void insert(KeyType key, ValueType value);
     AVLNode<KeyType, ValueType> *getMin();
     AVLNode<KeyType, ValueType> *getMax();
     int getHeight(AVLNode<KeyType, ValueType> *node);
@@ -28,6 +28,7 @@ public:
     AVLNode<KeyType, ValueType> *rotateLeft(AVLNode<KeyType, ValueType> *x);
 
 private:
+    AVLNode<KeyType, ValueType> *insertRecursive(AVLNode<KeyType, ValueType> *node, KeyType key, ValueType value);
     void deleteSubtree(AVLNode<KeyType, ValueType> *node);
     AVLNode<KeyType, ValueType> *balance(AVLNode<KeyType, ValueType> *node);
 };
@@ -106,35 +107,37 @@ AVLNode<KeyType, ValueType> *AVLTree<KeyType, ValueType>::rotateLeft(AVLNode<Key
 
     return y; // nueva raíz
 }
-/********************************************************************/
+
 template <typename KeyType, typename ValueType>
-AVLNode<KeyType, ValueType> *AVLTree<KeyType, ValueType>::insert(AVLNode<KeyType, ValueType> *node, KeyType key, ValueType value)
+void AVLTree<KeyType, ValueType>::insert(KeyType key, ValueType value)
 {
-    // 1. Insertar el nodo como en un BST
-    if (!node)
+    root = insertRecursive(root, key, value);
+}
+
+template <typename KeyType, typename ValueType>
+AVLNode<KeyType, ValueType> *AVLTree<KeyType, ValueType>::insertRecursive(AVLNode<KeyType, ValueType> *node, KeyType key, ValueType value)
+{
+    if (node == nullptr)
         return new AVLNode<KeyType, ValueType>(key, value);
 
     if (key < node->key)
-        node->left = insert(node->left, key, value);
+        node->left = insertRecursive(node->left, key, value);
     else if (key > node->key)
-        node->right = insert(node->right, key, value);
+        node->right = insertRecursive(node->right, key, value);
     else if (key == node->key)
     {
-        if (node->dataList.size() == 0) // if the list is empty, add the value of the node
+        if (node->dataList.size() == 0)
         {
             node->dataList.push_back(node->value);
         }
         node->dataList.push_back(value);
         return node;
     }
-    else // Claves duplicadas no se permiten en el AVL por ahora
-        return node;
 
-    // 2. Actualizar la altura de este nodo ancestro
     updateHeight(node);
-
     return balance(node);
 }
+
 /********************************************************************/
 template <typename KeyType, typename ValueType>
 AVLNode<KeyType, ValueType> *AVLTree<KeyType, ValueType>::balance(AVLNode<KeyType, ValueType> *node)
