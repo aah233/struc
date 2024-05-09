@@ -26,11 +26,16 @@ public:
     int getBalance(AVLNode<KeyType, ValueType> *node);
     AVLNode<KeyType, ValueType> *rotateRight(AVLNode<KeyType, ValueType> *y);
     AVLNode<KeyType, ValueType> *rotateLeft(AVLNode<KeyType, ValueType> *x);
+    bool isEmpty();
+    void removeLowerThan(KeyType key);
+    void removeGreaterThan(KeyType key);
 
 private:
     AVLNode<KeyType, ValueType> *insertRecursive(AVLNode<KeyType, ValueType> *node, KeyType key, ValueType value);
     void deleteSubtree(AVLNode<KeyType, ValueType> *node);
     AVLNode<KeyType, ValueType> *balance(AVLNode<KeyType, ValueType> *node);
+    AVLNode<KeyType, ValueType> *removeLowerThanRecursive(AVLNode<KeyType, ValueType> *node, KeyType key);
+    AVLNode<KeyType, ValueType> *removeGreaterThanRecursive(AVLNode<KeyType, ValueType> *node, KeyType key);
 };
 
 // Definitions of the AVLTree member functions
@@ -228,7 +233,12 @@ AVLNode<KeyType, ValueType> *AVLTree<KeyType, ValueType>::getMin()
     current->left = current->right = nullptr;
     return current;
 }
-
+/********************************************************************/
+template <typename KeyType, typename ValueType>
+bool AVLTree<KeyType, ValueType>::isEmpty()
+{
+    return root == nullptr;
+}
 /********************************************************************/
 template <typename KeyType, typename ValueType>
 AVLNode<KeyType, ValueType> *AVLTree<KeyType, ValueType>::getMax()
@@ -240,6 +250,72 @@ template <typename KeyType, typename ValueType>
 AVLTree<KeyType, ValueType>::~AVLTree()
 {
     deleteSubtree(root);
+}
+
+/********************************************************************/
+// Método público para eliminar todos los nodos con claves menores a un valor dado
+template <typename KeyType, typename ValueType>
+void AVLTree<KeyType, ValueType>::removeLowerThan(KeyType key)
+{
+    root = removeLowerThanRecursive(root, key);
+}
+
+/********************************************************************/
+// Método privado recursivo para eliminar nodos
+template <typename KeyType, typename ValueType>
+AVLNode<KeyType, ValueType> *AVLTree<KeyType, ValueType>::removeLowerThanRecursive(AVLNode<KeyType, ValueType> *node, KeyType key)
+{
+    if (node == nullptr)
+    {
+        return nullptr;
+    }
+
+    if (node->key < key)
+    {
+        AVLNode<KeyType, ValueType> *rightSubtree = removeLowerThanRecursive(node->right, key); // procesar primero el subárbol derecho
+        deleteSubtree(node->left);                                                              // eliminar subárbol izquierdo seguro
+        delete node;                                                                            // eliminar el nodo actual seguro
+        return rightSubtree;                                                                    // devolver el subárbol derecho procesado
+    }
+    else
+    {
+        node->left = removeLowerThanRecursive(node->left, key); // procesar subárbol izquierdo
+    }
+
+    updateHeight(node);   // actualizar altura del nodo actual
+    return balance(node); // balancear y devolver el nodo actual
+}
+/********************************************************************/
+template <typename KeyType, typename ValueType>
+void AVLTree<KeyType, ValueType>::removeGreaterThan(KeyType key)
+{
+    root = removeGreaterThanRecursive(root, key);
+}
+/********************************************************************/
+template <typename KeyType, typename ValueType>
+AVLNode<KeyType, ValueType> *AVLTree<KeyType, ValueType>::removeGreaterThanRecursive(AVLNode<KeyType, ValueType> *node, KeyType key)
+{
+    if (node == nullptr)
+    {
+        return nullptr;
+    }
+
+    // Si la clave del nodo es mayor que la clave especificada, eliminar este nodo y todo su subárbol derecho
+    if (node->key > key)
+    {
+        AVLNode<KeyType, ValueType> *leftSubtree = removeGreaterThanRecursive(node->left, key); // procesar primero el subárbol izquierdo
+        deleteSubtree(node->right);                                                             // eliminar subárbol derecho seguro
+        delete node;                                                                            // eliminar el nodo actual seguro
+        return leftSubtree;                                                                     // devolver el subárbol izquierdo procesado
+    }
+    else
+    {
+        // Si la clave del nodo es menor o igual, solo procesar el subárbol derecho
+        node->right = removeGreaterThanRecursive(node->right, key); // procesar subárbol derecho
+    }
+
+    updateHeight(node);   // actualizar altura del nodo actual
+    return balance(node); // balancear y devolver el nodo actual
 }
 
 #endif

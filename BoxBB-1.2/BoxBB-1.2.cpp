@@ -35,20 +35,9 @@ int main(int argc, char *argv[])
 	setlocale(LC_NUMERIC, "en_US.UTF-8"); // Use thousands separators
 	cout.imbue(std::locale("en_US.UTF-8"));
 	cerr.imbue(std::locale("en_US.UTF-8"));
-	AVLTree<int, std::string> myAVLTree(1, "RootNode");
-
+	AVLTree<double, BOX *> pbtbWork;
+	AVLTree<double, BOX *> pbtbEnd;
 	// Obteniendo la raíz del árbol
-	AVLNode<int, std::string> *rootNode = myAVLTree.getRoot();
-
-	// Comprobando si la raíz no es nullptr y luego imprimiendo el valor
-	if (rootNode != nullptr)
-	{
-		std::cerr << "Root key: " << rootNode->key << ", Root value: " << rootNode->value << std::endl;
-	}
-	else
-	{
-		std::cerr << "Root is nullptr." << std::endl;
-	}
 
 	// Init counters
 	for (int i = 0; i < NCounters; i++)
@@ -83,9 +72,15 @@ int main(int argc, char *argv[])
 		exit(EXIT_FAILURE);
 	}
 
+	// In the case pass the test
+	pbtbWork = new AVLTree<double, BOX *>();
+
+	pbtbWork.insert(pB->FX.lower(), pB);
 	//   while (pB != NULL && (&pB->FX.upper() - &pB->FX.lower() > Alpha))
-	while (pB != nullptr && pB->Width > Alpha)
+	while (pbtbWork->isEmpty() != true)
 	{
+		// Get minimum box
+		pB = pbtbWork->getMin();
 		//  Inicializar 2 divisores de caja
 		BOX *pBoXG1 = new BOX(*pB); // Crear un nuevo BOX como copia de B
 		BOX *pBoXG2 = new BOX(*pB); // Crear otro BOX como copia de B
