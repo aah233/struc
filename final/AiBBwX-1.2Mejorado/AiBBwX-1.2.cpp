@@ -99,7 +99,7 @@ int main(int argc, char *argv[])
     {
         pB = pbtbWork.getMin();
         pCounters[CNIters]++; // N. Ierations
-
+       
         if (CtD.NCheckAVL > 0 && pCounters[CNIters] % CtD.NCheckAVL == 1)
         {
             pbtbWork.checkOrderTree(pbtbWork);
