@@ -32,3 +32,7 @@ paso 2
 coger alfa -d , y while hasta que no sea mejor que alfa 
 pintar por pantalla, salida gráfica
 tfl 
+
+
+sci-hub.se
+

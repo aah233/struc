@@ -30,7 +30,7 @@
 using namespace std;
 
 /*---------------------------------------------------------------------------*/
-PBOX ProcessBox(PBOX pB, double Epsilon, ConstData &CtD, AVLTree<itv, PBOX> &pbtbWork, AVLTree<itv, PBOX> &pbtbEnd, int *pCounters, iTDAT &iTDat)
+PBOX ProcessBox(PBOX pB, double Epsilon, ConstData &CtD, AVLTree<double, PBOX> &pbtbWork, AVLTree<double, PBOX> &pbtbEnd, int *pCounters, iTDAT &iTDat)
 {
    EvalBox(pB, CtD, iTDat, pCounters);
    pB = TestBox(pB, CtD, iTDat, pCounters);
@@ -40,11 +40,13 @@ PBOX ProcessBox(PBOX pB, double Epsilon, ConstData &CtD, AVLTree<itv, PBOX> &pbt
       {
          if (CtD.Draw)
             DrawBox(pB, CtD, true, "#c02020"); // Fill=true
-         pbtbEnd.insert(pB->F, pB);
+         pbtbEnd.insert(pB->F.lower(), pB);
+         pCounters[CinsertE]++;
       }
       else
       {
-         pbtbWork.insert(pB->F, pB);
+         pbtbWork.insert(pB->F.lower(), pB);
+         pCounters[CinsertW]++;
       }
    }
    return nullptr;
@@ -77,8 +79,8 @@ int main(int argc, char *argv[])
    PrintParams(stderr, CtD, Epsilon);
    int NDim = CtD.NDim;
 
-   AVLTree<itv, PBOX> pbtbWork = AVLTree<itv, PBOX>();
-   AVLTree<itv, PBOX> pbtbEnd = AVLTree<itv, PBOX>();
+   AVLTree<double, PBOX> pbtbWork = AVLTree<double, PBOX>();
+   AVLTree<double, PBOX> pbtbEnd = AVLTree<double, PBOX>();
 
    // Two temporal boxes and one rvector to avoid memory calls
    iTDat.pBPoint = GetMemBox(NDim);
@@ -117,8 +119,9 @@ int main(int argc, char *argv[])
       if (PrevNUpInc < pCounters[CNIncumb]) //<N. Incumbent Impro
       {
          PrevNUpInc = pCounters[CNIncumb]; //=N. Incumbent Impro
-         pbtbWork.removeGreaterThan(iTDat.pBIncumb->F);
-         pbtbEnd.removeGreaterThan(iTDat.pBIncumb->F);
+         pbtbWork.removeGreaterThan(iTDat.pBIncumb->F.upper());
+         pbtbEnd.removeGreaterThan(iTDat.pBIncumb->F.upper());
+         pCounters[Coff]++;
       }
    } // End While
    /*
@@ -151,12 +154,20 @@ int main(int argc, char *argv[])
    cerr << "& " << "CNEvalFG  ";
    cerr << "& " << "CNEvalLB  ";
    cerr << "& " << "CNEvalP   ";
+   cerr << "& " << "CutOff";
+   cerr << "& " << "InsertE";
+   cerr << "& " << "InsertW";
    cerr << "& " << "CNSucLBF  " << endl;
 
    cerr << setw(10) << right << pCounters[CNEvalFG] << " & ";
    cerr << setw(10) << right << pCounters[CNEvalLB] << " & ";
    cerr << setw(10) << right << pCounters[CNEvalP] << " & ";
+   cerr << setw(10) << right << pCounters[Coff] << " & ";
+   cerr << setw(10) << right << pCounters[CinsertE] << " & ";
+   cerr << setw(10) << right << pCounters[CinsertW] << " & ";
    cerr << setw(10) << right << pCounters[CNSucLbF] << " & " << endl;
+
+   cerr << setw(10) << right << " Eliminaciones: " << pCounters[CinsertW] - pCounters[CNIters];
 
    //---------------------------------
    if (CtD.Draw)
