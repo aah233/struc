@@ -1,5 +1,7 @@
 # Trabajo Final de Grado y Complemento 
-![Alt text](./img/logo.jpg)
+<p align="center">
+  <img src="./img/logo.jpg" alt="Logo">
+</p>
 
 
 ## Nomenclaturas:
