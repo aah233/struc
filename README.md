@@ -130,6 +130,10 @@ Implementación del AOGI con multi_index. La estructura de datos multi_index per
 ### Implementación en AOGI-MI:
 El uso de multi_index permite implementar el AOGI de manera que se pueda acceder y manipular los intervalos de las cajas a través de múltiples índices, optimizando el rendimiento y la flexibilidad en la manipulación de los datos.
 
+## Tiempo de los diferentes algoritmos:
+<p align="center">
+  <img src="./img/grafica.jpg" alt="Logo" width="400">
+</p>
 ## Observaciones para AVL-T:
 - El elemento que se instancie en el template sea una clase que tenga sobrecargados algunos operadores, o sobrecargar el acceso a los métodos 'lower' y 'upper', ya que existe un comparador específico para intervalos.
 
