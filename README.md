@@ -131,6 +131,19 @@ Implementación del AOGI con multi_index. La estructura de datos multi_index per
 El uso de multi_index permite implementar el AOGI de manera que se pueda acceder y manipular los intervalos de las cajas a través de múltiples índices, optimizando el rendimiento y la flexibilidad en la manipulación de los datos.
 
 ## Tiempo de los diferentes algoritmos:
+
+| Algoritmo | Descripción                  | Dimensión $n$ |
+|----------|------------------------------|---------------|
+| EX6-1    | Karhbet example 6 over simplex 1 | 2             |
+| EX6-2    | Karhbet example 6 over simplex 2 | 2             |
+| G7       | Griewank                    | 7*            |
+| GP2      | Goldstein-Price             | 2             |
+| L8       | Levy                        | 8*            |
+| MC2      | McCormick                   | 2             |
+| RB7      | Rosenbrock                  | 7*            |
+| SHCB2    | Six Hump Camel Back         | 2             |
+| THCB2    | Three Hump Camel Back       | 2             |
+
 <p align="center">
   <img src="./img/grafica.png" alt="Logo">
 </p>
