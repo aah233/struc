@@ -1,4 +1,5 @@
-# struc
+# Trabajo final de Grado y Complemento 
+
 
 ## Objetivo:
 Tener una versión C++ con templates para el almacenamiento en árbol binario balanceado ordenado por una clave (límite **inferior** de la función objetivo), donde cada nodo se almacenan los elementos con la misma clave. Para los elementos con la misma clave:
