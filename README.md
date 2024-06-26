@@ -26,13 +26,3 @@ El kv-0.4.51 debe tener un enlace simbólico en tu HOME:
   - cd [enter]
   - ~ $> ln -s [donde este]/kv-0.4.51 kv
 
-
-
-paso 2 
-coger alfa -d , y while hasta que no sea mejor que alfa 
-pintar por pantalla, salida gráfica
-tfl 
-
-
-sci-hub.se
-
