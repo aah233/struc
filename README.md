@@ -3,6 +3,9 @@
   <img src="./img/logo.jpg" alt="Logo" width="400">
 </p>
 
+![Salida gráfica](./img/salida.gif)
+
+
 ## Nomenclaturas:
 - **AVL**: Árbol Binario de búsqueda balanceado.
 - **AVL-T**: Árbol Binario de búsqueda balanceado con templates.
