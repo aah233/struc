@@ -2,6 +2,7 @@
 <p align="center">
   <img src="./img/logo.jpg" alt="Logo" width="400">
 </p>
+
 ## Nomenclaturas:
 - **AVL**: Árbol Binario de búsqueda balanceado.
 - **AVL-T**: Árbol Binario de búsqueda balanceado con templates.
