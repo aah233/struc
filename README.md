@@ -132,6 +132,9 @@ El uso de multi_index permite implementar el AOGI de manera que se pueda acceder
 
 ## Tiempo de los diferentes algoritmos:
 
+
+<p align="center">
+  
 | Algoritmo | Descripción                  | Dimensión $n$ |
 |----------|------------------------------|---------------|
 | EX6-1    | Karhbet example 6 over simplex 1 | 2             |
@@ -143,8 +146,6 @@ El uso de multi_index permite implementar el AOGI de manera que se pueda acceder
 | RB7      | Rosenbrock                  | 7*            |
 | SHCB2    | Six Hump Camel Back         | 2             |
 | THCB2    | Three Hump Camel Back       | 2             |
-
-<p align="center">
   <img src="./img/grafica.png" alt="Logo">
 </p>
 
