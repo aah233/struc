@@ -24,7 +24,7 @@ Versión C++ con templates para el almacenamiento en AVL ordenado por una clave 
 
 
 <p align="center">
-  <img src="./img/Diagrama.png" alt="Logo" width="400">
+  <img src="./img/Diagrama.png" alt="Logo">
 </p>
 
 ### Comparadores del AVL-T:
