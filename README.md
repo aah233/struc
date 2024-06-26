@@ -2,10 +2,6 @@
 <p align="center">
   <img src="./img/logo.jpg" alt="Logo" width="400">
 </p>
-
-![Salida gráfica](./img/salida.gif)
-
-
 ## Nomenclaturas:
 - **AVL**: Árbol Binario de búsqueda balanceado.
 - **AVL-T**: Árbol Binario de búsqueda balanceado con templates.
@@ -148,3 +144,6 @@ El uso de multi_index permite implementar el AOGI de manera que se pueda acceder
 4. **kv** (paquete C++ con Aritmética de Intervalos). Este usa:
    - **boost-devel**
 5. **boost** (para el uso de multi_index)
+
+## Salida gráfica:
+![Salida gráfica](./img/salida.gif)
