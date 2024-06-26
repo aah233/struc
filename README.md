@@ -132,7 +132,7 @@ El uso de multi_index permite implementar el AOGI de manera que se pueda acceder
 
 ## Tiempo de los diferentes algoritmos:
 <p align="center">
-  <img src="./img/grafica.jpg" alt="Logo" width="400">
+  <img src="./img/grafica.png" alt="Logo" width="400">
 </p>
 ## Observaciones para AVL-T:
 - El elemento que se instancie en el template sea una clase que tenga sobrecargados algunos operadores, o sobrecargar el acceso a los métodos 'lower' y 'upper', ya que existe un comparador específico para intervalos.
