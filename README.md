@@ -1,4 +1,6 @@
 # Trabajo Final de Grado y Complemento 
+![Alt text](./img/Diagrama de clases.png)
+
 
 ## Nomenclaturas:
 - **AVL**: Árbol Binario de búsqueda balanceado.
