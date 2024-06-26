@@ -20,7 +20,12 @@ Versión C++ con templates para el almacenamiento en AVL ordenado por una clave 
 - En el código actual se almacenan en una lista FIFO.
 - Se puede usar otro árbol binario ordenado por menor límite **superior** de la función objetivo.
 - En caso de que haya dos elementos con los mismos dos límites se usa una lista.
-- Acepta otros comparadores para almacenar cualquier tipo de clave. 
+- Acepta otros comparadores para almacenar cualquier tipo de clave.
+
+
+<p align="center">
+  <img src="./img/Diagrama.png" alt="Logo" width="400">
+</p>
 
 ### Comparadores del AVL-T:
 
