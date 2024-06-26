@@ -1,8 +1,7 @@
 # Trabajo Final de Grado y Complemento 
 <p align="center">
-  <img src="./img/logo.jpg" alt="Logo">
+  <img src="./img/logo.jpg" alt="Logo" width="200">
 </p>
-
 
 ## Nomenclaturas:
 - **AVL**: Árbol Binario de búsqueda balanceado.
