@@ -137,6 +137,9 @@ El uso de multi_index permite implementar el AOGI de manera que se pueda acceder
 ## Observaciones para AVL-T:
 - El elemento que se instancie en el template sea una clase que tenga sobrecargados algunos operadores, o sobrecargar el acceso a los métodos 'lower' y 'upper', ya que existe un comparador específico para intervalos.
 
+## Salida gráfica con tk para la evaluación de las cajas:
+![Salida gráfica](./img/salida.gif)
+
 ## Necesitarás
 1. **make**
 2. **Compilador g++**
@@ -144,6 +147,3 @@ El uso de multi_index permite implementar el AOGI de manera que se pueda acceder
 4. **kv** (paquete C++ con Aritmética de Intervalos). Este usa:
    - **boost-devel**
 5. **boost** (para el uso de multi_index)
-
-## Salida gráfica con tk para la evaluación de las cajas:
-![Salida gráfica](./img/salida.gif)
