@@ -145,5 +145,5 @@ El uso de multi_index permite implementar el AOGI de manera que se pueda acceder
    - **boost-devel**
 5. **boost** (para el uso de multi_index)
 
-## Salida gráfica:
+## Salida gráfica con tk para la evaluación de las cajas:
 ![Salida gráfica](./img/salida.gif)
