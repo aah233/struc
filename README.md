@@ -6,7 +6,9 @@
 ## Nomenclaturas:
 - **AVL**: Árbol Binario de búsqueda balanceado.
 - **AVL-T**: Árbol Binario de búsqueda balanceado con templates.
-- **AOGI**: Algoritmo intervalar.
+- **AOGI-C**: Algoritmo intervalar en C.
+- **AOGI-T**: Algoritmo intervalar implementado con templates. 
+- **AOGI-MI**: Algoritmo intervalar implementado con multi_index.
 - **AOGI-M**: Algoritmo intervalar implementado con multiset. 
 - **AOGI-MI**: Algoritmo intervalar implementado con multi_index.
 
