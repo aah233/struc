@@ -82,21 +82,21 @@ struct Comparator<T, std::void_t<decltype(std::declval<T>().lower()), decltype(s
 };
 ```
 ### Métodos del AVL-T:
-- **AVLTree(KeyType key, ValueType value)**: Constructor que inicializa el árbol con una clave y un valor especificados.
-- **~AVLTree()**: Destructor que elimina el árbol.
-- **AVLNode<KeyType, ValueType> *getRoot()**: Retorna el nodo raíz del árbol.
-- **void insert(KeyType key, ValueType value)**: Inserta un nodo con la clave y valor especificados en el árbol.
-- **ValueType getMin()**: Obtiene el valor mínimo del árbol.
-- **AVLNode<KeyType, ValueType> *getMax()**: Obtiene el nodo con la clave máxima.
-- **int getHeight(AVLNode<KeyType, ValueType> *node)**: Retorna la altura de un nodo.
-- **void updateHeight(AVLNode<KeyType, ValueType> *node)**: Actualiza la altura de un nodo.
-- **int getBalance(AVLNode<KeyType, ValueType> *node)**: Calcula el factor de balance de un nodo.
-- **AVLNode<KeyType, ValueType> *rotateRight(AVLNode<KeyType, ValueType> *y)**: Realiza una rotación a la derecha en el nodo especificado.
-- **AVLNode<KeyType, ValueType> *rotateLeft(AVLNode<KeyType, ValueType> *x)**: Realiza una rotación a la izquierda en el nodo especificado.
-- **bool isEmpty()**: Verifica si el árbol está vacío.
-- **void removeLowerThan(KeyType key)**: Elimina todos los nodos con claves menores a una clave especificada.
-- **void removeGreaterThan(KeyType key)**: Elimina todos los nodos con claves mayores a una clave especificada.
-- **void checkOrderTree(AVLTree<KeyType, ValueType> &tree)**: Verifica el orden del árbol.
+- `AVLTree(KeyType key, ValueType value)`: Constructor que inicializa el árbol con una clave y un valor especificados.
+- `~AVLTree()`: Destructor que elimina el árbol.
+- `AVLNode<KeyType, ValueType> *getRoot()`: Retorna el nodo raíz del árbol.
+- `void insert(KeyType key, ValueType value)`: Inserta un nodo con la clave y valor especificados en el árbol.
+- `ValueType getMin()`: Obtiene el valor mínimo del árbol.
+- `AVLNode<KeyType, ValueType> *getMax()`: Obtiene el nodo con la clave máxima.
+- `int getHeight(AVLNode<KeyType, ValueType> *node)`: Retorna la altura de un nodo.
+- `void updateHeight(AVLNode<KeyType, ValueType> *node)`: Actualiza la altura de un nodo.
+- `int getBalance(AVLNode<KeyType, ValueType> *node)`: Calcula el factor de balance de un nodo.
+- `AVLNode<KeyType, ValueType> *rotateRight(AVLNode<KeyType, ValueType> *y)`: Realiza una rotación a la derecha en el nodo especificado.
+- `AVLNode<KeyType, ValueType> *rotateLeft(AVLNode<KeyType, ValueType> *x)`: Realiza una rotación a la izquierda en el nodo especificado.
+- `bool isEmpty()`: Verifica si el árbol está vacío.
+- `void removeLowerThan(KeyType key)`: Elimina todos los nodos con claves menores a una clave especificada.
+- `void removeGreaterThan(KeyType key)`: Elimina todos los nodos con claves mayores a una clave especificada.
+- `void checkOrderTree(AVLTree<KeyType, ValueType> &tree)`: Verifica el orden del árbol.
 ## AOGI-M:
 Implementación del AOGI con multiset, esta estructura permite adjuntar un comparador, nosotros hemos creado un comparador para la comparación.
 
