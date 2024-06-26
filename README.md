@@ -1,5 +1,5 @@
 # Trabajo Final de Grado y Complemento 
-![Alt text](./img/Diagrama de clases.png)
+![Alt text](./img/logo.jpg)
 
 
 ## Nomenclaturas:
