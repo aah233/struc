@@ -1,6 +1,6 @@
 # Trabajo Final de Grado y Complemento 
 <p align="center">
-  <img src="./img/logo.jpg" alt="Logo" width="200">
+  <img src="./img/logo.jpg" alt="Logo" width="400">
 </p>
 
 ## Nomenclaturas:
